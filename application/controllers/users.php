@@ -21,8 +21,10 @@ class Users extends Controller {
             $last = RequestMethods::post("last");
             $email = RequestMethods::post("email");
             $password = RequestMethods::post("password");
+            
             $view = $this->getActionView();
             $error = false;
+            
             if (empty($first)) {
                 $view->set("first_error", "First name not provided");
                 $error = true;

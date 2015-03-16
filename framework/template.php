@@ -24,7 +24,7 @@ namespace Framework {
         /**
          * @readwrite
          */
-        protected $_header = "if (is_array(\$_data) && sizeof(\$_data))  extract(\$_data); \$_text = array();";
+        protected $_header = "if (is_array(\$_data) && sizeof(\$_data)) extract(\$_data); \$_text = array();";
 
         /**
          * @readwrite

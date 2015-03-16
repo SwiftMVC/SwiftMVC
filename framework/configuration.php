@@ -30,7 +30,7 @@ namespace Framework {
             }
             switch ($this->type) {
                 case "ini": {
-                        return new Conﬁguration\Driver\Ini($this->options);
+                        return new Configuration\Driver\Ini($this->options);
                         break;
                     }
                 default: {

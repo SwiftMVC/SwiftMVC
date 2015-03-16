@@ -44,7 +44,7 @@ namespace Framework\Template\Implementation {
                     "closer" => "}",
                     "handler" => "yield"
                 )
-                    ) + $this->_map;
+            ) + $this->_map;
 
             $this->_map["statement"]["tags"] = array(
                 "set" => array(
@@ -62,9 +62,15 @@ namespace Framework\Template\Implementation {
                     "arguments" => "{key}",
                     "handler" => "prepend"
                 )
-                    ) + $this->_map["statement"]["tags"];
+            ) + $this->_map["statement"]["tags"];
         }
 
+        /**
+         * Fetch a subtemplate and place it within the main template
+         * @param type $tree
+         * @param type $content
+         * @return type
+         */
         protected function _include($tree, $content) {
             $template = new Template(array(
                 "implementation" => new self()
@@ -155,11 +161,11 @@ namespace Framework\Template\Implementation {
             $this->set($key, $value.$previous);
         }
 
-        public function yield($tree, $content) {
+/*        public function yield($tree, $content) {
             $key = trim($tree["raw"]);
             $value = addslashes($this->_getValue($key));
             return "\$_text[] = \"{$value\";";
-        }
+        }*/
 
 }
 

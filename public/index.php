@@ -27,7 +27,7 @@ Framework\Registry::set("session", $session->initialize());
 
 // 7. load the Router class and provide the url + extension
 $router = new Framework\Router(array(
-    "url" => isset($_GET["url"]) ? $_GET["url"] : "index/index",
+    "url" => isset($_GET["url"]) ? $_GET["url"] : "home/index",
     "extension" => isset($_GET["url"]) ? $_GET["url"] : "html"
 ));
 Framework\Registry::set("router", $router); 

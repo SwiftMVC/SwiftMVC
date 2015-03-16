@@ -1,12 +1,12 @@
 <?php
 
-namespace Framework\Conﬁguration\Driver {
+namespace Framework\Configuration\Driver {
 
     use Framework\ArrayMethods as ArrayMethods;
-    use Framework\Conﬁguration as Conﬁguration;
-    use Framework\Conﬁguration\Exception as Exception;
+    use Framework\Configuration as Configuration;
+    use Framework\Configuration\Exception as Exception;
 
-    class Ini extends Conﬁguration\Driver {
+    class Ini extends Configuration\Driver {
 
         /**
          * Parse files from ini and include them
@@ -27,7 +27,7 @@ namespace Framework\Conﬁguration\Driver {
                 ob_end_clean();
                 $pairs = parse_ini_string($string);
                 if ($pairs == false) {
-                    throw new Exception\Syntax("Could not parse conﬁguration ﬁle");
+                    throw new Exception\Syntax("Could not parse Configuration ﬁle");
                 } foreach ($pairs as $key => $value) {
                     $conﬁg = $this->_pair($conﬁg, $key, $value);
                 } $this->_parsed[$path] = ArrayMethods::toObject($conﬁg);
@@ -35,7 +35,7 @@ namespace Framework\Conﬁguration\Driver {
         }
 
         /**
-         * It deconstructs the dot notation, used in the conﬁguration ﬁle’s keys,
+         * It deconstructs the dot notation, used in the Configuration ﬁle’s keys,
          * into an associative array hierarchy.
          * 
          * @param type $conﬁg

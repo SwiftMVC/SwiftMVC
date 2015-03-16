@@ -1,9 +1,9 @@
 <?php
 
-namespace Framework\Conﬁguration {
+namespace Framework\Configuration {
 
     use Framework\Base as Base;
-    use Framework\Conﬁguration\Exception as Exception;
+    use Framework\Configuration\Exception as Exception;
 
     class Driver extends Base {
 

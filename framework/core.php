@@ -13,6 +13,7 @@ namespace Framework {
     class Core {
 
         private static $_loaded = array();
+        
         private static $_paths = array(
             "/application/libraries",
             "/application/controllers",
@@ -27,7 +28,6 @@ namespace Framework {
             }
 
             // fix extra backslashes in $_POST/$_GET
-
             if (get_magic_quotes_gpc()) {
                 $globals = array("_POST", "_GET", "_COOKIE", "_REQUEST", "_SESSION");
 
@@ -39,7 +39,6 @@ namespace Framework {
             }
 
             // start autoloading
-
             $paths = array_map(function($item) {
                 return APP_PATH . $item;
             }, self::$_paths);
