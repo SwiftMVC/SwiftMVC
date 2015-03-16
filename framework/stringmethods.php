@@ -30,6 +30,7 @@ namespace Framework {
         }
 
         public function match($string, $pattern) {
+            $matches = null;
             preg_match_all(self::_normalize($pattern), $string, $matches, PREG_PATTERN_ORDER);
             if (!empty($matches[1])) {
                 return $matches[1];

@@ -15,7 +15,7 @@ namespace Framework {
         private $_inspector;
 
         public function __construct($options = array()) {
-            $this->$_inspector = new Inspector($this);
+            $this->_inspector = new Inspector($this);
 
             if (is_array($options) || is_object($options)) {
                 foreach ($options as $key => $value) {
@@ -51,7 +51,7 @@ namespace Framework {
 
             $setMatches = StringMethods::match($name, "^set([a-zA-Z0-9]+)$");
             if (sizeof($setMatches) > 0) {
-                $normalized = lcﬁrst($setMatches[0]);
+                $normalized = lcfirst($setMatches[0]);
                 $property = "_{$normalized}";
                 if (property_exists($this, $property)) {
                     $meta = $this->_inspector->getPropertyMeta($property);
@@ -66,12 +66,12 @@ namespace Framework {
         }
 
         public function __get($name) {
-            $function = "get" . ucﬁrst($name);
+            $function = "get" . ucfirst($name);
             return $this->$function();
         }
 
         public function __set($name, $value) {
-            $function = "set" . ucﬁrst($name);
+            $function = "set" . ucfirst($name);
             return $this->$function($value);
         }
 
