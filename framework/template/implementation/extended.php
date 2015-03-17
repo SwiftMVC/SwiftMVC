@@ -88,6 +88,14 @@ namespace Framework\Template\Implementation {
             };\$_text[] = \$_anon(\$_data);";
         }
 
+        /**
+         * Makes GET request to the URL and return the results to the template’s $_text array,
+         * where it will be rendered to the final template output
+         * @param type $tree
+         * @param type $content
+         * @return type
+         * 
+         */
         protected function _partial($tree, $content) {
             $address = trim($tree["raw"], " /");
 
@@ -102,6 +110,11 @@ namespace Framework\Template\Implementation {
             return "\$_text[] = \"{$response}\";";
         }
 
+        /**
+         * Simply extracts the provided storage key from the language constructs.
+         * @param type $tree
+         * @return type
+         */
         protected function _getKey($tree) {
             if (empty($tree["arguments"]["key"])) {
                 return null;
@@ -110,6 +123,11 @@ namespace Framework\Template\Implementation {
             return trim($tree["arguments"]["key"]);
         }
 
+        /**
+         * Offers the solution to storage that can be accessed from everywhere.
+         * @param type $key
+         * @param type $value
+         */
         protected function _setValue($key, $value) {
             if (!empty($key)) {
                 $data = Registry::get($this->defaultKey, array());
@@ -119,6 +137,11 @@ namespace Framework\Template\Implementation {
             }
         }
 
+        /**
+         * Queries the stored data array for the value matching the provided $key.
+         * @param type $key
+         * @return string
+         */
         protected function _getValue($key) {
             $data = Registry::get($this->defaultKey);
 
@@ -129,6 +152,12 @@ namespace Framework\Template\Implementation {
             return "";
         }
 
+        /**
+         * It is the first public construct handler we have used in any of our template implementations.
+         * It modifies the value string from something resembling $_text =  "foo"; to something resembling foo.
+         * @param type $key
+         * @param type $value
+         */
         public function set($key, $value) {
             if (StringMethods::indexOf($value, "\$_text") > -1) {
                 $first = StringMethods::indexOf($value, "\"");
@@ -161,12 +190,12 @@ namespace Framework\Template\Implementation {
             $this->set($key, $value.$previous);
         }
 
-/*        public function yield($tree, $content) {
+        public function yield($tree, $content) {
             $key = trim($tree["raw"]);
             $value = addslashes($this->_getValue($key));
-            return "\$_text[] = \"{$value\";";
-        }*/
+            return "\$_text[] = \"{$value}\";";
+        }
 
-}
-
+    }
+    
 }

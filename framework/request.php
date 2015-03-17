@@ -119,15 +119,31 @@ namespace Framework {
             return $response;
         }
 
+        /**
+         * Convenience method for tasks perform within the three important Request setter methods.
+         * @param type $key
+         * @param type $value
+         * @return \Framework\Request
+         */
         protected function _setOption($key, $value) {
             curl_setopt($this->_request, $key, $value);
             return $this;
         }
 
+        /**
+         * Convenience method for tasks perform within the three important Request setter methods.
+         * @param type $key
+         * @return type
+         */
         protected function _normalize($key) {
             return "CURLOPT_" . str_replace("CURLOPT_", "", strtoupper($key));
         }
 
+        /**
+         * Sets Curl parameters relating to each of the different request methods.
+         * @param type $method
+         * @return \Framework\Request
+         */
         protected function _setRequestMethod($method) {
             switch (strtoupper($method)) {
                 case "HEAD":
@@ -147,6 +163,12 @@ namespace Framework {
             return $this;
         }
 
+        /**
+         * Iterates through all the request-specific parameters that need to be set. 
+         * @param type $url
+         * @param type $parameters
+         * @return \Framework\Request
+         */
         protected function _setRequestOptions($url, $parameters) {
             $this
                     ->_setOption(CURLOPT_URL, $url)
@@ -177,6 +199,10 @@ namespace Framework {
             return $this;
         }
 
+        /**
+         * Iterates through the headers specified by the setHeaders() setter method to add any custom headers to the request.
+         * @return \Framework\Request
+         */
         protected function _setRequestHeaders() {
             $headers = array();
 
