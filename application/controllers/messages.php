@@ -10,6 +10,10 @@ use Framework\RequestMethods as RequestMethods;
 
 class Messages extends Controller {
 
+    /**
+     * Collects posted form data into a new message database row. It performs the required validation.
+     * and if everything looks good will save the record and redirect back to the home page.
+     */
     public function add() {
         $user = $this->getUser();
 

@@ -61,43 +61,6 @@ class User extends Framework\Model {
      */
     protected $_password;
 
-    /**
-     * @column
-     * @readwrite
-     * @type text
-     */
-    protected $_notes;
-
-    /**
-     * @column
-     * @readwrite
-     * @type boolean
-     * @index
-     */
-    protected $_live;
-
-    /**
-     * @column
-     * @readwrite
-     * @type boolean
-     * @index
-     */
-    protected $_deleted;
-
-    /**
-     * @column
-     * @readwrite
-     * @type datetime
-     */
-    protected $_created;
-
-    /**
-     * @column
-     * @readwrite
-     * @type datetime
-     */
-    protected $_modiﬁed;
-
     public function isFriend($id) {
         $friend = Friend::first(array(
             "user" => $this->getId(),

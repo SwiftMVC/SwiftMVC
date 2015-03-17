@@ -14,7 +14,7 @@ namespace Framework {
         private function __clone() {
             //do nothing
         }
-        
+
         /**
          * Useful for converting a multidimensional array into a unidimensional array.
          * 
@@ -31,6 +31,24 @@ namespace Framework {
                 }
             }
             return $return;
+        }
+
+        public static function first($array) {
+            if (sizeof($array) == 0) {
+                return null;
+            }
+
+            $keys = array_keys($array);
+            return $array[$keys[0]];
+        }
+
+        public static function last($array) {
+            if (sizeof($array) == 0) {
+                return null;
+            }
+
+            $keys = array_keys($array);
+            return $array[$keys[sizeof($keys) - 1]];
         }
 
         public static function toObject($array) {

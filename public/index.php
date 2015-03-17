@@ -1,7 +1,8 @@
 <?php
 
-// 1. define the default path for includes
 define("DEBUG", TRUE);
+
+// 1. define the default path for includes
 define("APP_PATH", dirname(dirname(__FILE__)));
 
 try {

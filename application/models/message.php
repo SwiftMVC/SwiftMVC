@@ -32,6 +32,11 @@ class Message extends Shared\Model {
      */
     protected $_user;
 
+    /**
+     * fetches a list of replies to a message. It also returns the user_name of the user who replied, 
+     * and sorts the replies by their creation date, so that newer messages are displayed first.
+     * @return type
+     */
     public function getReplies() {
         return self::all(array(
             "message = ?" => $this->getId(),

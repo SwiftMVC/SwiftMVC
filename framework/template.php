@@ -260,8 +260,10 @@ namespace Framework {
             }
             $array = $this->_array($template);
             $tree = $this->_tree($array["all"]);
+            
             $this->_code = $this->header.$this->_script($tree).$this-> footer;
             $this->_function = create_function("\$_data", $this->code);
+
             return $this;
         }
 
