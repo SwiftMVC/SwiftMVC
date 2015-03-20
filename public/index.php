@@ -22,6 +22,16 @@ try {
     require("../framework/core.php");
     Framework\Core::initialize();
 
+    // plugins
+    $path = APP_PATH . "/application/plugins";
+    $iterator = new DirectoryIterator($path);
+
+    foreach ($iterator as $item) {
+        if (!$item->isDot() && $item->isDir()) {
+            include($path . "/" . $item->getFilename() . "/initialize.php");
+        }
+    }
+
     // 3. load and initialize the Configuration class 
     $configuration = new Framework\Configuration(array(
         "type" => "ini"
@@ -60,6 +70,7 @@ try {
     unset($session);
     unset($router);
 } catch (Exception $e) {
+    
     // list exceptions
     $exceptions = array(
         "500" => array(
@@ -67,24 +78,29 @@ try {
             "Framework\Cache\Exception\Argument",
             "Framework\Cache\Exception\Implementation",
             "Framework\Cache\Exception\Service",
+            
             "Framework\Configuration\Exception",
             "Framework\Configuration\Exception\Argument",
             "Framework\Configuration\Exception\Implementation",
             "Framework\Configuration\Exception\Syntax",
+            
             "Framework\Controller\Exception",
             "Framework\Controller\Exception\Argument",
             "Framework\Controller\Exception\Implementation",
+            
             "Framework\Core\Exception",
             "Framework\Core\Exception\Argument",
             "Framework\Core\Exception\Implementation",
             "Framework\Core\Exception\Property",
             "Framework\Core\Exception\ReadOnly",
             "Framework\Core\Exception\WriteOnly",
+            
             "Framework\Database\Exception",
             "Framework\Database\Exception\Argument",
             "Framework\Database\Exception\Implementation",
             "Framework\Database\Exception\Service",
             "Framework\Database\Exception\Sql",
+            
             "Framework\Model\Exception",
             "Framework\Model\Exception\Argument",
             "Framework\Model\Exception\Connector",
@@ -92,20 +108,25 @@ try {
             "Framework\Model\Exception\Primary",
             "Framework\Model\Exception\Type",
             "Framework\Model\Exception\Validation",
+            
             "Framework\Request\Exception",
             "Framework\Request\Exception\Argument",
             "Framework\Request\Exception\Implementation",
             "Framework\Request\Exception\Response",
+            
             "Framework\Router\Exception",
             "Framework\Router\Exception\Argument",
             "Framework\Router\Exception\Implementation",
+            
             "Framework\Session\Exception",
             "Framework\Session\Exception\Argument",
             "Framework\Session\Exception\Implementation",
+            
             "Framework\Template\Exception",
             "Framework\Template\Exception\Argument",
             "Framework\Template\Exception\Implementation",
             "Framework\Template\Exception\Parser",
+            
             "Framework\View\Exception",
             "Framework\View\Exception\Argument",
             "Framework\View\Exception\Data",
@@ -133,6 +154,7 @@ try {
     }
 
     // log or email any error
+    
     // render fallback template
     header("Content-type: text/html");
     echo "An error occurred.";
