@@ -32,12 +32,12 @@
                 Page:
                 <select name="page">
                     {if $count == 0}
-                        <option value="1">1</option>
+                    <option value="1">1</option>
                     {/if}
                     {else}
-                        {foreach $_page in range(1, ceil($count / $limit))}
-                            <option {if $page == $_page}selected="selected"{/if} value="{echo $_page}">{echo $_page}</option>
-                        {/foreach}
+                    {foreach $_page in range(1, ceil($count / $limit))}
+                    <option {if $page == $_page}selected="selected"{/if} value="{echo $_page}">{echo $_page}</option>
+                    {/foreach}
                     {/else}
                 </select>
             </label>
@@ -58,23 +58,25 @@
     </ol>
 </form>
 {if $users != false}
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>&nbsp;</th>
-        </tr>
-        {foreach $row in $users}
-            <tr>
-                <td>{echo $row->first} {echo $row->last}</td>
-                 <td>
-                    {if User::hasFriend($user->id, $row->id)}
-                        <a href="/unfriend/{echo $row->id}.html">unfriend</a>
-                    {/if}
-                    {else}
-                        <a href="/friend/{echo $row->id}.html">friend</a>
-                    {/else}
-                 </td>
-            </tr>
-        {/foreach}
-    </table>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>&nbsp;</th>
+    </tr>
+    {foreach $_user in $users}
+    {script $file = $_user->file}
+    <tr>
+        <td>{if $file}<img src="/uploads/{echo $file->name}" />{/if}</td>
+        <td>{echo $_user->first} {echo $_user->last}</td>
+        <td>
+            {if $_user->isFriend($user->id)}
+            <a href="/unfriend/{echo $_user->id}.html">unfriend</a>
+            {/if}
+            {else}
+            <a href="/friend/{echo $_user->id}.html">friend</a>
+            {/else}
+        </td>
+    </tr>
+    {/foreach}
+</table>
 {/if}
