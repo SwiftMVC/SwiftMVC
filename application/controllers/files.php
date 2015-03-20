@@ -90,7 +90,7 @@ class Files extends Controller {
         $path = APP_PATH . "/public/uploads";
 
         $file = File::first(array(
-                    "id = ?" => $id
+            "id = ?" => $id
         ));
 
         if ($file) {
@@ -111,9 +111,9 @@ class Files extends Controller {
                     $mode = Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
 
                     $imagine
-                            ->open("{$path}/{$name}")
-                            ->thumbnail($size, $mode)
-                            ->save("{$path}/{$thumbnail}");
+                        ->open("{$path}/{$name}")
+                        ->thumbnail($size, $mode)
+                        ->save("{$path}/{$thumbnail}");
                 }
 
                 header("Location: /uploads/{$thumbnail}");

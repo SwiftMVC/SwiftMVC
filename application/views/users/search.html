@@ -64,19 +64,19 @@
         <th>&nbsp;</th>
     </tr>
     {foreach $_user in $users}
-    {script $file = $_user->file}
-    <tr>
-        <td>{if $file}<img src="/uploads/{echo $file->name}" />{/if}</td>
-        <td>{echo $_user->first} {echo $_user->last}</td>
-        <td>
-            {if $_user->isFriend($user->id)}
-            <a href="/unfriend/{echo $_user->id}.html">unfriend</a>
-            {/if}
-            {else}
-            <a href="/friend/{echo $_user->id}.html">friend</a>
-            {/else}
-        </td>
-    </tr>
+        {script $file = $_user->file}
+        <tr>
+            <td>{if $file}<img src="/uploads/{echo $file->name}" />{/if}</td>
+            <td>{echo $_user->first} {echo $_user->last}</td>
+            <td>
+                {if $_user->isFriend($user->id)}
+                    <a href="/unfriend/{echo $_user->id}.html">unfriend</a>
+                {/if}
+                {else}
+                    <a href="/friend/{echo $_user->id}.html">friend</a>
+                {/else}
+            </td>
+        </tr>
     {/foreach}
 </table>
 {/if}

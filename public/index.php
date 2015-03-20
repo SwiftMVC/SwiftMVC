@@ -6,6 +6,18 @@ define("DEBUG", TRUE);
 define("APP_PATH", dirname(dirname(__FILE__)));
 
 try {
+
+    // imagine library's class autoloader
+    spl_autoload_register(function($class) {
+        $path = lcfirst(str_replace("\\", DIRECTORY_SEPARATOR, $class));
+        $file = APP_PATH . "/application/libraries/{$path}.php";
+
+        if (file_exists($file)) {
+            require_once $file;
+            return true;
+        }
+    });
+
     // 2. load the Core class that includes an autoloader
     require("../framework/core.php");
     Framework\Core::initialize();
@@ -34,7 +46,7 @@ try {
         "extension" => isset($_GET["url"]) ? $_GET["url"] : "html"
     ));
     Framework\Registry::set("router", $router);
-    
+
     // include custom routes 
     include("routes.php");
 
@@ -119,9 +131,8 @@ try {
             }
         }
     }
-    
-    // log or email any error
 
+    // log or email any error
     // render fallback template
     header("Content-type: text/html");
     echo "An error occurred.";
