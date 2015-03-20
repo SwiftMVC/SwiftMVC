@@ -12,9 +12,15 @@ namespace Framework {
     use Framework\View as View;
     use Framework\Registry as Registry;
     use Framework\Template as Template;
+    use Framework\Events as Events;
     use Framework\Controller\Exception as Exception;
 
     class Controller extends Base {
+
+        /**
+         * @read
+         */
+        protected $_name;
 
         /**
          * @readwrite
@@ -69,12 +75,14 @@ namespace Framework {
          */
         public function __construct($options = array()) {
             parent::__construct($options);
+            
+            Events::fire("framework.controller.construct.before", array($this->name));
             if ($this->getWillRenderLayoutView()) {
                 $defaultPath = $this->getDefaultPath();
                 $defaultLayout = $this->getDefaultLayout();
                 $defaultExtension = $this->getDefaultExtension();
                 $view = new View(array(
-                    "file" => APP_PATH."/{$defaultPath}/{$defaultLayout}.{$defaultExtension}"
+                    "file" => APP_PATH . "/{$defaultPath}/{$defaultLayout}.{$defaultExtension}"
                 ));
                 $this->setLayoutView($view);
             }
@@ -83,10 +91,11 @@ namespace Framework {
                 $controller = $router->getController();
                 $action = $router->getAction();
                 $view = new View(array(
-                    "file" => APP_PATH."/{$defaultPath}/{$controller}/{$action}.{$defaultExtension}"
+                    "file" => APP_PATH . "/{$defaultPath}/{$controller}/{$action}.{$defaultExtension}"
                 ));
                 $this->setActionView($view);
             }
+            Events::fire("framework.controller.construct.after", array($this->name));
         }
 
         protected function _getExceptionForImplementation($method) {
@@ -98,10 +107,14 @@ namespace Framework {
         }
 
         public function render() {
+            Events::fire("framework.controller.render.before", array($this->name));
+            
             $defaultContentType = $this->getDefaultContentType();
             $results = null;
+            
             $doAction = $this->getWillRenderActionView() && $this->getActionView();
             $doLayout = $this->getWillRenderLayoutView() && $this->getLayoutView();
+            
             try {
                 if ($doAction) {
                     $view = $this->getActionView();
@@ -121,10 +134,21 @@ namespace Framework {
             } catch (\Exception $e) {
                 throw new View\Exception\Renderer("Invalid layout/template syntax");
             }
+            
+            Events::fire("framework.controller.render.after", array($this->name));
         }
 
         public function __destruct() {
+            Events::fire("framework.controller.destruct.before", array($this->name));
             $this->render();
+            Events::fire("framework.controller.destruct.after", array($this->name));
+        }
+
+        protected function getName() {
+            if (empty($this->_name)) {
+                $this->_name = get_class($this);
+            }
+            return $this->_name;
         }
 
     }

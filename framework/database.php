@@ -30,13 +30,16 @@ namespace Framework {
         }
 
         public function initialize() {
-            $type = $this->getType();
+            Events::fire("framework.database.initialize.before", array($this->type, $this->options));
             
-            if (empty($type)) {
+            if (!$this->type) {
+                
                 $configuration = Registry::get("configuration");
+                
                 if ($configuration) {
                     $configuration = $configuration->initialize();
                     $parsed = $configuration->parse("configuration/database");
+                    
                     if (!empty($parsed->database->default) && !empty($parsed->database->default->type)) {
                         $type = $parsed->database->default->type;
                         unset($parsed->database->default->type);
@@ -44,12 +47,16 @@ namespace Framework {
                     }
                 }
             }
-            if (empty($type)) {
+            
+            if (!$this->type) {
                 throw new Exception\Argument("Invalid type");
             }
-            switch ($type) {
+            
+            Events::fire("framework.database.initialize.after", array($this->type, $this->options));
+            
+            switch ($this->type) {
                 case "mysql": {
-                        return new Database\Connector\Mysql($this->getOptions());
+                        return new Database\Connector\Mysql($this->options());
                         break;
                     }
                 default: {

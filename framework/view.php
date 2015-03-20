@@ -13,7 +13,7 @@ namespace Framework {
     use Framework\View\Exception as Exception;
 
     class View extends Base {
-        
+
         /**
          * @readwrite
          */
@@ -23,7 +23,6 @@ namespace Framework {
          * @read
          */
         protected $_template;
-        
         protected $_data = array();
 
         public function _getExceptionForImplementation($method) {
@@ -36,18 +35,24 @@ namespace Framework {
 
         public function __construct($options = array()) {
             parent::__construct($options);
+            Events::fire("framework.view.construct.before", array($this->file));
+
             $this->_template = new Template(array(
                 "implementation" => new Template\Implementation\Standard()
             ));
+
+            Events::fire("framework.view.construct.after", array($this->file, $this->template));
         }
 
         public function render() {
-            if (!file_exists($this->getFile())) {
+            Events::fire("framework.view.render.before", array($this->file));
+            if (!file_exists($this->file)) {
                 return "";
             }
-            $content = file_get_contents($this-> getFile());
-            $this->_template->parse($content);
-            return $this->_template->process($this->_data);
+            return $this
+                ->template
+                ->parse(file_get_contents($this->file))
+                ->process($this->data);
         }
 
         public function get($key, $default = "") {
