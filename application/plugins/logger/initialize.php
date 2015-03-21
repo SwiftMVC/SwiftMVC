@@ -1,12 +1,11 @@
 <?php
 
 // initialize logger
-
 include("logger.php");
 
 $logger = new Logger(array(
     "file" => APP_PATH . "/logs/" . date("Y-m-d") . ".txt"
-        ));
+));
 
 // log cache events
 

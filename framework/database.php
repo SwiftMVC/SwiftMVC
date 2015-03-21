@@ -56,7 +56,7 @@ namespace Framework {
             
             switch ($this->type) {
                 case "mysql": {
-                        return new Database\Connector\Mysql($this->options());
+                        return new Database\Connector\Mysql($this->options);
                         break;
                     }
                 default: {

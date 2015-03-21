@@ -38,34 +38,40 @@ class Users extends Controller {
 
     public function login() {
         if (RequestMethods::post("login")) {
+            
             $email = RequestMethods::post("email");
             $password = RequestMethods::post("password");
+            
             $view = $this->getActionView();
             $error = false;
+            
             if (empty($email)) {
                 $view->set("email_error", "Email not provided");
                 $error = true;
             }
+            
             if (empty($password)) {
                 $view->set("password_error", "Password not provided");
                 $error = true;
             }
+            
             if (!$error) {
                 $user = User::first(array(
-                            "email = ?" => $email,
-                            "password = ?" => $password,
-                            "live = ?" => true,
-                            "deleted = ?" => false
+                    "email = ?" => $email,
+                    "password = ?" => $password,
+                    "live = ?" => true,
+                    "deleted = ?" => false
                 ));
+                
                 if (!empty($user)) {
                     $session = Registry::get("session");
                     $session->set("user", serialize($user));
+                    
                     header("Location: /users/profile.html");
                     exit();
                 } else {
                     $view->set("password_error", "Email address and/or password are incorrect");
                 }
-                exit();
             }
         }
     }

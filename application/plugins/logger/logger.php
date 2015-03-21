@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of Logger
+ * Adds a log message
  *
  * @author Faizan Ayubi
  */

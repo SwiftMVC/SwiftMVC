@@ -75,7 +75,7 @@ namespace Framework {
          */
         public function __construct($options = array()) {
             parent::__construct($options);
-            
+
             Events::fire("framework.controller.construct.before", array($this->name));
             if ($this->getWillRenderLayoutView()) {
                 $defaultPath = $this->getDefaultPath();
@@ -108,33 +108,42 @@ namespace Framework {
 
         public function render() {
             Events::fire("framework.controller.render.before", array($this->name));
-            
-            $defaultContentType = $this->getDefaultContentType();
+
+            $defaultContentType = $this->defaultContentType;
             $results = null;
-            
-            $doAction = $this->getWillRenderActionView() && $this->getActionView();
-            $doLayout = $this->getWillRenderLayoutView() && $this->getLayoutView();
-            
+
+            $doAction = $this->willRenderActionView && $this->actionView;
+            $doLayout = $this->willRenderLayoutView && $this->layoutView;
+
             try {
                 if ($doAction) {
-                    $view = $this->getActionView();
+                    $view = $this->actionView;
                     $results = $view->render();
-                } if ($doLayout) {
-                    $view = $this->getLayoutView();
-                    $view->set("template", $results);
+
+                    $this
+                        ->actionView
+                        ->template
+                        ->implementation
+                        ->set("action", $results);
+                }
+
+                if ($doLayout) {
+                    $view = $this->layoutView;
                     $results = $view->render();
+
                     header("Content-type: {$defaultContentType}");
                     echo $results;
                 } else if ($doAction) {
                     header("Content-type: {$defaultContentType}");
                     echo $results;
-                    $this->setWillRenderLayoutView(false);
-                    $this->setWillRenderActionView(false);
                 }
+
+                $this->willRenderLayoutView = false;
+                $this->willRenderActionView = false;
             } catch (\Exception $e) {
                 throw new View\Exception\Renderer("Invalid layout/template syntax");
             }
-            
+
             Events::fire("framework.controller.render.after", array($this->name));
         }
 

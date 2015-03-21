@@ -2,8 +2,16 @@
 <html lang="en">
     <head>
         <title>SwiftMVC</title>
+        <link type="text/css" href="/fonts/LuxiSans.css" rel="stylesheet" />
+        <style type="text/css">
+            h1
+            {
+                font-family: "LuxiSans";
+            }
+        </style>
     </head>
     <body>
-        {echo $template}
+        {include navigation.html}
+        {yield action}
     </body>
 </html>
