@@ -3,7 +3,9 @@
 define("DEBUG", TRUE);
 
 // 1. define the default path for includes
-define("APP_PATH", dirname(dirname(__FILE__)));
+//define("APP_PATH", dirname(dirname(__FILE__)));
+
+define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(dirname(__FILE__))));
 
 try {
 

@@ -46,7 +46,7 @@ namespace Shared {
          * @readwrite
          * @type datetime
          */
-        protected $_modiﬁed;
+        protected $_modified;
 
         /**
          * Every time a row is created these fields should be populated with default values.

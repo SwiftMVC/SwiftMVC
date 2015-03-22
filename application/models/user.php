@@ -24,7 +24,7 @@ class User extends Framework\Model {
      * @validate required, alpha, min(3), max(32)
      * @label first name
      */
-    protected $_ﬁrst;
+    protected $_first;
 
     /**
      * @column

@@ -10,6 +10,8 @@
 namespace Framework {
 
     use Framework\Base as Base;
+    use Framework\Events as Events;
+    use Framework\Registry as Registry;
     use Framework\Database as Database;
     use Framework\Database\Exception as Exception;
 
@@ -31,29 +33,28 @@ namespace Framework {
 
         public function initialize() {
             Events::fire("framework.database.initialize.before", array($this->type, $this->options));
-            
+
             if (!$this->type) {
-                
                 $configuration = Registry::get("configuration");
-                
+
                 if ($configuration) {
                     $configuration = $configuration->initialize();
                     $parsed = $configuration->parse("configuration/database");
-                    
+
                     if (!empty($parsed->database->default) && !empty($parsed->database->default->type)) {
-                        $type = $parsed->database->default->type;
+                        $this->type = $parsed->database->default->type;
                         unset($parsed->database->default->type);
-                        $this->__construct(array("type" => $type, "options" => (array) $parsed->database->default));
+                        $this->options = (array) $parsed->database->default;
                     }
                 }
             }
-            
+
             if (!$this->type) {
                 throw new Exception\Argument("Invalid type");
             }
-            
+
             Events::fire("framework.database.initialize.after", array($this->type, $this->options));
-            
+
             switch ($this->type) {
                 case "mysql": {
                         return new Database\Connector\Mysql($this->options);

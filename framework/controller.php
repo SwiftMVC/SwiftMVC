@@ -10,9 +10,9 @@ namespace Framework {
 
     use Framework\Base as Base;
     use Framework\View as View;
+    use Framework\Events as Events;
     use Framework\Registry as Registry;
     use Framework\Template as Template;
-    use Framework\Events as Events;
     use Framework\Controller\Exception as Exception;
 
     class Controller extends Base {
@@ -67,6 +67,17 @@ namespace Framework {
          */
         protected $_defaultContentType = "text/html";
 
+        protected function getName() {
+            if (empty($this->_name)) {
+                $this->_name = get_class($this);
+            }
+            return $this->_name;
+        }
+
+        protected function _getExceptionForImplementation($method) {
+            return new Exception\Implementation("{$method} method not implemented");
+        }
+
         /**
          * It defines the location of the layout template, which is passed to the new View instance, which is then passed into the setLayoutView() setter method.
          * It gets the controller/action names from the router. It gets the router instance from the registry, and uses getters for the names.
@@ -77,33 +88,32 @@ namespace Framework {
             parent::__construct($options);
 
             Events::fire("framework.controller.construct.before", array($this->name));
-            if ($this->getWillRenderLayoutView()) {
-                $defaultPath = $this->getDefaultPath();
-                $defaultLayout = $this->getDefaultLayout();
-                $defaultExtension = $this->getDefaultExtension();
+
+            if ($this->willRenderLayoutView) {
+                $defaultPath = $this->defaultPath;
+                $defaultLayout = $this->defaultLayout;
+                $defaultExtension = $this->defaultExtension;
+
                 $view = new View(array(
                     "file" => APP_PATH . "/{$defaultPath}/{$defaultLayout}.{$defaultExtension}"
                 ));
-                $this->setLayoutView($view);
+
+                $this->layoutView = $view;
             }
-            if ($this->getWillRenderLayoutView()) {
+
+            if ($this->willRenderActionView) {
                 $router = Registry::get("router");
-                $controller = $router->getController();
-                $action = $router->getAction();
+                $controller = $router->controller;
+                $action = $router->action;
+
                 $view = new View(array(
                     "file" => APP_PATH . "/{$defaultPath}/{$controller}/{$action}.{$defaultExtension}"
                 ));
-                $this->setActionView($view);
+
+                $this->actionView = $view;
             }
+
             Events::fire("framework.controller.construct.after", array($this->name));
-        }
-
-        protected function _getExceptionForImplementation($method) {
-            return new Exception\Implementation("{$method} method not implemented");
-        }
-
-        protected function _getExceptionForArgument() {
-            return new Exception\Argument("Invalid argument");
         }
 
         public function render() {
@@ -121,10 +131,10 @@ namespace Framework {
                     $results = $view->render();
 
                     $this
-                        ->actionView
-                        ->template
-                        ->implementation
-                        ->set("action", $results);
+                            ->actionView
+                            ->template
+                            ->implementation
+                            ->set("action", $results);
                 }
 
                 if ($doLayout) {
@@ -149,15 +159,10 @@ namespace Framework {
 
         public function __destruct() {
             Events::fire("framework.controller.destruct.before", array($this->name));
-            $this->render();
-            Events::fire("framework.controller.destruct.after", array($this->name));
-        }
 
-        protected function getName() {
-            if (empty($this->_name)) {
-                $this->_name = get_class($this);
-            }
-            return $this->_name;
+            $this->render();
+
+            Events::fire("framework.controller.destruct.after", array($this->name));
         }
 
     }

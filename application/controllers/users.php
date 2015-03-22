@@ -17,8 +17,9 @@ class Users extends Controller {
      */
     public function register() {
         $view = $this->getActionView();
+        $view->set("errors", array());
 
-        if (RequestMethods::post("save")) {
+        if (RequestMethods::post("register")) {
             $user = new User(array(
                 "first" => RequestMethods::post("first"),
                 "last" => RequestMethods::post("last"),
@@ -29,46 +30,43 @@ class Users extends Controller {
             if ($user->validate()) {
                 $user->save();
                 $this->_upload("photo", $user->id);
-                $this->actionView->set("success", true);
+                $view->set("success", true);
             }
 
-            $this->actionView->set("errors", $user->errors);
+            $view->set("errors", $user->getErrors());
         }
     }
 
     public function login() {
         if (RequestMethods::post("login")) {
-            
+
             $email = RequestMethods::post("email");
             $password = RequestMethods::post("password");
-            
+
             $view = $this->getActionView();
             $error = false;
-            
+
             if (empty($email)) {
                 $view->set("email_error", "Email not provided");
                 $error = true;
             }
-            
+
             if (empty($password)) {
                 $view->set("password_error", "Password not provided");
                 $error = true;
             }
-            
+
             if (!$error) {
                 $user = User::first(array(
-                    "email = ?" => $email,
-                    "password = ?" => $password,
-                    "live = ?" => true,
-                    "deleted = ?" => false
+                            "email = ?" => $email,
+                            "password = ?" => $password,
+                            "live = ?" => true,
+                            "deleted = ?" => false
                 ));
-                
+
                 if (!empty($user)) {
-                    $session = Registry::get("session");
-                    $session->set("user", serialize($user));
-                    
-                    header("Location: /users/profile.html");
-                    exit();
+                    $this->user = $user;
+                    self::redirect("/users/profile.html");
                 } else {
                     $view->set("password_error", "Email address and/or password are incorrect");
                 }
@@ -78,12 +76,15 @@ class Users extends Controller {
 
     public function profile() {
         $session = Registry::get("session");
-        $user = unserialize($session->get("user", null));
+        $user = $this->user;
+
         if (empty($user)) {
             $user = new StdClass();
             $user->first = "Mr.";
             $user->last = "Smith";
+            $user->file = "";
         }
+
         $this->getActionView()->set("user", $user);
     }
 
@@ -128,36 +129,31 @@ class Users extends Controller {
      * @before _secure
      */
     public function settings() {
-        $errors = array();
+        $view = $this->getActionView();
+        $user = $this->getUser();
 
-        if (RequestMethods::post("save")) {
-            $this->user->first = RequestMethods::post("first");
-            $this->user->last = RequestMethods::post("last");
-            $this->user->email = RequestMethods::post("email");
+        if (RequestMethods::post("update")) {
+            $user = new User(array(
+                "first" => RequestMethods::post("first", $user->first),
+                "last" => RequestMethods::post("last", $user->last),
+                "email" => RequestMethods::post("email", $user->email),
+                "password" => RequestMethods::post("password", $user->password)
+            ));
 
-            if (RequestMethods::post("password")) {
-                $this->user->password = RequestMethods::post("password");
-            }
-
-            if ($this->user->validate()) {
-                $this->user->save();
+            if ($user->validate()) {
+                $user->save();
+                $this->user = $user;
                 $this->_upload("photo", $this->user->id);
-                $this->actionView->set("success", true);
+                $view->set("success", true);
             }
-            
-            $errors = $this->user->errors;
+
+            $view->set("errors", $user->getErrors());
         }
-        $this->actionView->set("errors", $errors);
     }
 
     public function logout() {
         $this->setUser(false);
-
-        $session = Registry::get("session");
-        $session->erase("user");
-
-        header("Location: /users/login.html");
-        exit();
+        self::redirect("/users/login.html");
     }
 
     /**

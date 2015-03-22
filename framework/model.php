@@ -77,7 +77,7 @@ namespace Framework {
         /**
          * Determines the model’s primary column and checks to see whether it is not empty.
          * This tells us whether the primary key has been provided,
-         * which gives us a viable means of ﬁnding the intended record. If the primary key class property is empty,
+         * which gives us a viable means of finding the intended record. If the primary key class property is empty,
          * we assume this model instance is intended for the creation of a new record, and do nothing further.
          * 
          * @throws Exception\Primary
@@ -87,7 +87,7 @@ namespace Framework {
             $raw = $primary["raw"];
             $name = $primary["name"];
             if (!empty($this->$raw)) {
-                $previous = $this->connector->query()->from($this->table)->where("{$name} = ?", $this->$raw)->ﬁrst();
+                $previous = $this->connector->query()->from($this->table)->where("{$name} = ?", $this->$raw)->first();
                 if ($previous == null) {
                     throw new Exception\Primary("Primary key value invalid");
                 } foreach ($previous as $key => $value) {
@@ -117,7 +117,7 @@ namespace Framework {
                     $data[$key] = $this->$prop;
                     continue;
                 } if ($column != $this->primaryColumn && $column) {
-                    $method = "get" . ucﬁrst($key);
+                    $method = "get" . ucfirst($key);
                     $data[$key] = $this->$method();
                     continue;
                 }
@@ -157,30 +157,30 @@ namespace Framework {
         /**
          * Simple, static wrapper method for the protected _all() method
          * @param type $where
-         * @param type $ﬁelds
+         * @param type $fields
          * @param type $order
          * @param type $direction
          * @param type $limit
          * @param type $page
          * @return type
          */
-        public static function all($where = array(), $ﬁelds = array("*"), $order = null, $direction = null, $limit = null, $page = null) {
+        public static function all($where = array(), $fields = array("*"), $order = null, $direction = null, $limit = null, $page = null) {
             $model = new static();
-            return $model->_all($where, $ﬁelds, $order, $direction, $limit, $page);
+            return $model->_all($where, $fields, $order, $direction, $limit, $page);
         }
 
         /**
-         * Creates a query, taking into account the various ﬁlters and ﬂags, to return all matching records.
+         * Creates a query, taking into account the various filters and ﬂags, to return all matching records.
          * @param type $where
-         * @param type $ﬁelds
+         * @param type $fields
          * @param type $order
          * @param type $direction
          * @param type $limit
          * @param type $page
          * @return \Framework\class
          */
-        protected function _all($where = array(), $ﬁelds = array("*"), $order = null, $direction = null, $limit = null, $page = null) {
-            $query = $this->connector->query()->from($this->table, $ﬁelds);
+        protected function _all($where = array(), $fields = array("*"), $order = null, $direction = null, $limit = null, $page = null) {
+            $query = $this->connector->query()->from($this->table, $fields);
             foreach ($where as $clause => $value) {
                 $query->where($clause, $value);
             } if ($order != null) {
@@ -197,34 +197,34 @@ namespace Framework {
         /**
          * Simple, static wrapper method to a protected instance method _first
          * @param type $where
-         * @param type $ﬁelds
+         * @param type $fields
          * @param type $order
          * @param type $direction
          * @return type
          */
-        public static function ﬁrst($where = array(), $ﬁelds = array("*"), $order = null, $direction = null) {
+        public static function first($where = array(), $fields = array("*"), $order = null, $direction = null) {
             $model = new static();
-            return $model->_ﬁrst($where, $ﬁelds, $order, $direction);
+            return $model->_first($where, $fields, $order, $direction);
         }
 
         /**
-         * Simply returns the ﬁrst matched record
+         * Simply returns the first matched record
          * @param type $where
-         * @param type $ﬁelds
+         * @param type $fields
          * @param type $order
          * @param type $direction
          * @return \Framework\class
          */
-        protected function _ﬁrst($where = array(), $ﬁelds = array("*"), $order = null, $direction = null) {
-            $query = $this->connector->query()->from($this->table, $ﬁelds);
+        protected function _first($where = array(), $fields = array("*"), $order = null, $direction = null) {
+            $query = $this->connector->query()->from($this->table, $fields);
             foreach ($where as $clause => $value) {
                 $query->where($clause, $value);
             } if ($order != null) {
                 $query->order($order, $direction);
-            } $ﬁrst = $query->ﬁrst();
+            } $first = $query->first();
             $class = get_class($this);
-            if ($ﬁrst) {
-                return new $class($query->ﬁrst());
+            if ($first) {
+                return new $class($query->first());
             } return null;
         }
 
@@ -255,7 +255,7 @@ namespace Framework {
         }
 
         /**
-         * Return a user-deﬁned table name or else default to the singular form of the current Model’s class name
+         * Return a user-defined table name or else default to the singular form of the current Model’s class name
          * @return type
          */
         public function getTable() {
@@ -293,7 +293,7 @@ namespace Framework {
                 $types = $this->types;
                 $inspector = new Inspector($this);
                 $properties = $inspector->getClassProperties();
-                $ﬁrst = function($array, $key) {
+                $first = function($array, $key) {
                     if (!empty($array[$key]) && sizeof($array[$key]) == 1) {
                         return $array[$key][0];
                     }
@@ -304,14 +304,14 @@ namespace Framework {
                     if (!empty($propertyMeta["@column"])) {
                         $name = preg_replace("#^_#", "", $property);
                         $primary = !empty($propertyMeta["@primary"]);
-                        $type = $ﬁrst($propertyMeta, "@type");
-                        $length = $ﬁrst($propertyMeta, "@length");
+                        $type = $first($propertyMeta, "@type");
+                        $length = $first($propertyMeta, "@length");
                         $index = !empty($propertyMeta["@index"]);
                         $readwrite = !empty($propertyMeta["@readwrite"]);
                         $read = !empty($propertyMeta["@read"]) || $readwrite;
                         $write = !empty($propertyMeta["@write"]) || $readwrite;
                         $validate = !empty($propertyMeta["@validate"]) ? $propertyMeta["@validate"] : false;
-                        $label = $ﬁrst($propertyMeta, "@label");
+                        $label = $first($propertyMeta, "@label");
                         if (!in_array($type, $types)) {
                             throw new Exception\Type("{$type} is not a valid type");
                         }

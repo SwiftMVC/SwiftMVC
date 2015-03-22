@@ -7,9 +7,6 @@ namespace Framework {
     use Framework\StringMethods as StringMethods;
     use Framework\Core\Exception as Exception;
 
-    /**
-     * Base
-     */
     class Base {
 
         private $_inspector;
@@ -35,6 +32,7 @@ namespace Framework {
             if (sizeof($getMatches) > 0) {
                 $normalized = lcfirst($getMatches[0]);
                 $property = "_{$normalized}";
+
                 if (property_exists($this, $property)) {
                     $meta = $this->_inspector->getPropertyMeta($property);
 
@@ -45,6 +43,7 @@ namespace Framework {
                     if (isset($this->$property)) {
                         return $this->$property;
                     }
+
                     return null;
                 }
             }
@@ -53,15 +52,19 @@ namespace Framework {
             if (sizeof($setMatches) > 0) {
                 $normalized = lcfirst($setMatches[0]);
                 $property = "_{$normalized}";
+
                 if (property_exists($this, $property)) {
                     $meta = $this->_inspector->getPropertyMeta($property);
+
                     if (empty($meta["@readwrite"]) && empty($meta["@write"])) {
                         throw $this->_getExceptionForReadonly($normalized);
                     }
+
                     $this->$property = $arguments[0];
                     return $this;
                 }
             }
+
             throw $this->_getExceptionForImplementation($name);
         }
 
@@ -94,5 +97,3 @@ namespace Framework {
     }
 
 }
-
-?>

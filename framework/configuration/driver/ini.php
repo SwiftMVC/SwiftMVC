@@ -20,38 +20,38 @@ namespace Framework\Configuration\Driver {
             if (empty($path)) {
                 throw new Exception\Argument("\$path argument is not valid");
             } if (!isset($this->_parsed[$path])) {
-                $conﬁg = array();
+                $config = array();
                 ob_start();
                 include("{$path}.ini");
                 $string = ob_get_contents();
                 ob_end_clean();
                 $pairs = parse_ini_string($string);
                 if ($pairs == false) {
-                    throw new Exception\Syntax("Could not parse Configuration ﬁle");
+                    throw new Exception\Syntax("Could not parse Configuration file");
                 } foreach ($pairs as $key => $value) {
-                    $conﬁg = $this->_pair($conﬁg, $key, $value);
-                } $this->_parsed[$path] = ArrayMethods::toObject($conﬁg);
+                    $config = $this->_pair($config, $key, $value);
+                } $this->_parsed[$path] = ArrayMethods::toObject($config);
             } return $this->_parsed[$path];
         }
 
         /**
-         * It deconstructs the dot notation, used in the Configuration ﬁle’s keys,
+         * It deconstructs the dot notation, used in the Configuration file’s keys,
          * into an associative array hierarchy.
          * 
-         * @param type $conﬁg
+         * @param type $config
          * @param type $key
          * @param type $value
          * @return type
          */
-        protected function _pair($conﬁg, $key, $value) {
+        protected function _pair($config, $key, $value) {
             if (strstr($key, ".")) {
                 $parts = explode(".", $key, 2);
-                if (empty($conﬁg[$parts[0]])) {
-                    $conﬁg[$parts[0]] = array();
-                } $conﬁg[$parts[0]] = $this->_pair($conﬁg[$parts[0]], $parts[1], $value);
+                if (empty($config[$parts[0]])) {
+                    $config[$parts[0]] = array();
+                } $config[$parts[0]] = $this->_pair($config[$parts[0]], $parts[1], $value);
             } else {
-                $conﬁg[$key] = $value;
-            } return $conﬁg;
+                $config[$key] = $value;
+            } return $config;
         }
 
     }
