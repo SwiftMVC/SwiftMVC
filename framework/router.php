@@ -134,7 +134,6 @@ namespace Framework {
             $this->_action = $action;
 
             Events::fire("framework.router.controller.before", array($controller, $parameters));
-
             try {
                 $instance = new $name(array(
                     "parameters" => $parameters

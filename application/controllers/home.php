@@ -10,6 +10,7 @@ use Framework\Controller as Controller;
 class Home extends Controller {
 
     public function index() {
+        
         $user = $this->getUser();
         $view = $this->getActionView();
 
@@ -33,6 +34,15 @@ class Home extends Controller {
 
             $view->set("messages", $messages);
         }
+    }
+    
+    public function welcome() {
+        $messages = Message::all(array(
+                "user in ?" => '1',
+                "live = ?" => true,
+                "deleted = ?" => false
+            ), array("*"), "created", "asc");
+
     }
 
 }

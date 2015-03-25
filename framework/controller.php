@@ -67,17 +67,6 @@ namespace Framework {
          */
         protected $_defaultContentType = "text/html";
 
-        protected function getName() {
-            if (empty($this->_name)) {
-                $this->_name = get_class($this);
-            }
-            return $this->_name;
-        }
-
-        protected function _getExceptionForImplementation($method) {
-            return new Exception\Implementation("{$method} method not implemented");
-        }
-
         /**
          * It defines the location of the layout template, which is passed to the new View instance, which is then passed into the setLayoutView() setter method.
          * It gets the controller/action names from the router. It gets the router instance from the registry, and uses getters for the names.
@@ -86,7 +75,6 @@ namespace Framework {
          */
         public function __construct($options = array()) {
             parent::__construct($options);
-
             Events::fire("framework.controller.construct.before", array($this->name));
 
             if ($this->willRenderLayoutView) {
@@ -114,6 +102,17 @@ namespace Framework {
             }
 
             Events::fire("framework.controller.construct.after", array($this->name));
+        }
+        
+        protected function getName() {
+            if (empty($this->_name)) {
+                $this->_name = get_class($this);
+            }
+            return $this->_name;
+        }
+
+        protected function _getExceptionForImplementation($method) {
+            return new Exception\Implementation("{$method} method not implemented");
         }
 
         public function render() {
