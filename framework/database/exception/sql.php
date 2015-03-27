@@ -1,11 +1,11 @@
 <?php
 
-namespace Framework\Database\Exception
-{
+namespace Framework\Database\Exception {
+
     use Framework\Database as Database;
-    
-    class Sql extends Database\Exception
-    {
-    
+
+    class Sql extends Database\Exception {
+        
     }
+
 }

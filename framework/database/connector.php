@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Connecting to the database engine and/or returning the relevant query class instances.
- *
- * @author Faizan Ayubi
- */
-
 namespace Framework\Database {
 
     use Framework\Base as Base;
@@ -23,4 +17,4 @@ namespace Framework\Database {
 
     }
 
-} 
+}
