@@ -5,7 +5,7 @@
  *
  * @author Faizan Ayubi
  */
-class User extends Framework\Model {
+class User extends Shared\Model {
 
     /**
      * @column
@@ -60,6 +60,13 @@ class User extends Framework\Model {
      * @label password
      */
     protected $_password;
+    
+    /**
+    * @column
+    * @readwrite
+    * @type boolean
+    */
+    protected $_admin = false;
 
     public function isFriend($id) {
         $friend = Friend::first(array(

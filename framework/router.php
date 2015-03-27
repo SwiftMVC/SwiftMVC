@@ -134,6 +134,7 @@ namespace Framework {
             $this->_action = $action;
 
             Events::fire("framework.router.controller.before", array($controller, $parameters));
+
             try {
                 $instance = new $name(array(
                     "parameters" => $parameters
@@ -186,7 +187,7 @@ namespace Framework {
             call_user_func_array(array(
                 $instance,
                 $action
-            ), is_array($parameters) ? $parameters : array());
+                    ), is_array($parameters) ? $parameters : array());
 
             Events::fire("framework.router.action.after", array($action, $parameters));
             Events::fire("framework.router.afterhooks.before", array($action, $parameters));

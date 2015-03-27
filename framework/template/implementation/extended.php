@@ -39,10 +39,10 @@ namespace Framework\Template\Implementation {
                     "closer" => "}",
                     "handler" => "_include"
                 ),
-                "yield" => array(
-                    "opener" => "{yield",
+                "ayield" => array(
+                    "opener" => "{ayield",
                     "closer" => "}",
-                    "handler" => "yield"
+                    "handler" => "ayield"
                 )
             ) + $this->_map;
 
@@ -190,7 +190,7 @@ namespace Framework\Template\Implementation {
             $this->set($key, $value.$previous);
         }
 
-        public function yield($tree, $content) {
+        public function ayield($tree, $content) {
             $key = trim($tree["raw"]);
             $value = addslashes($this->_getValue($key));
             return "\$_text[] = \"{$value}\";";
