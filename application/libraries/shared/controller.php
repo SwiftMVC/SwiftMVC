@@ -28,6 +28,22 @@ namespace Shared {
             }
         }
 
+        /**
+         * @protected
+         */
+        public function _secure() {
+            $user = $this->getUser();
+            if (!$user) {
+                header("Location: /login.html");
+                exit();
+            }
+        }
+
+        public static function redirect($url) {
+            header("Location: {$url}");
+            exit();
+        }
+
         public function setUser($user) {
             $session = Registry::get("session");
             if ($user) {
