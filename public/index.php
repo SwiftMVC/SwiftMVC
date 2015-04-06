@@ -51,11 +51,11 @@ try {
     // 6. load and initialize the Session class 
     $session = new Framework\Session();
     Framework\Registry::set("session", $session->initialize());
-
+    
     // 7. load the Router class and provide the url + extension
     $router = new Framework\Router(array(
         "url" => isset($_GET["url"]) ? $_GET["url"] : "home/index",
-        "extension" => isset($_GET["url"]) ? $_GET["url"] : "html"
+        "extension" => !empty($_GET["extension"]) ? $_GET["extension"] : "html"
     ));
     Framework\Registry::set("router", $router);
 
