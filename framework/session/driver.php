@@ -1,20 +1,20 @@
 <?php
 
-namespace Framework\Session
-{
+namespace Framework\Session {
+
     use Framework\Base as Base;
     use Framework\Session\Exception as Exception;
-    
-    class Driver extends Base
-    {
-        public function initialize()
-        {
+
+    class Driver extends Base {
+
+        public function initialize() {
             return $this;
         }
-        
-        protected function _getExceptionForImplementation($method)
-        {
+
+        protected function _getExceptionForImplementation($method) {
             return new Exception\Implementation("{$method} method not implemented");
         }
+
     }
+
 }

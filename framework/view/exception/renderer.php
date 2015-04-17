@@ -1,11 +1,11 @@
 <?php
 
-namespace Framework\View\Exception
-{
+namespace Framework\View\Exception {
+
     use Framework\View as View;
-    
-    class Renderer extends View\Exception
-    {
+
+    class Renderer extends View\Exception {
         
     }
+
 }

@@ -99,19 +99,6 @@ namespace Framework {
 
             Events::fire("framework.router.dispatch.before", array($url));
 
-            foreach ($this->_routes as $route) {
-                $matches = $route->matches($url);
-                if ($matches) {
-                    $controller = $route->controller;
-                    $action = $route->action;
-                    $parameters = $route->parameters;
-
-                    Events::fire("framework.router.dispatch.after", array($url, $controller, $action, $parameters));
-                    $this->_pass($controller, $action, $parameters);
-                    return;
-                }
-            }
-
             $parts = explode("/", trim($url, "/"));
 
             if (sizeof($parts) > 0) {
@@ -121,10 +108,26 @@ namespace Framework {
                     $action = $parts[1];
                     $parameters = array_slice($parts, 2);
                 }
+
+                if (!$this->classExists($controller)) {
+                    foreach ($this->_routes as $route) {
+                        $matches = $route->matches($url);
+                        if ($matches) {
+                            $controller = $route->controller;
+                            $action = $route->action;
+                            $parameters = $route->parameters;
+
+                            Events::fire("framework.router.dispatch.after", array($url, $controller, $action, $parameters));
+                            $this->_pass($controller, $action, $parameters);
+                            return;
+                        }
+                    }
+                }
             }
 
-            Events::fire("framework.router.dispatch.after", array($url, $controller, $action, $parameters));
             $this->_pass($controller, $action, $parameters);
+
+            Events::fire("framework.router.dispatch.after", array($url, $controller, $action, $parameters));
         }
 
         protected function _pass($controller, $action, $parameters = array()) {
@@ -199,6 +202,18 @@ namespace Framework {
             // unset controller
 
             Registry::erase("controller");
+        }
+
+        public function classExists($class) {
+            $path = "C:/wamp/www/swiftintern/application/controllers";
+            $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE;
+            $file = strtolower(str_replace("\\", DIRECTORY_SEPARATOR, trim($class, "\\"))) . ".php";
+
+            $combined = $path . DIRECTORY_SEPARATOR . $file;
+
+            if (file_exists($combined)) {
+                return 1;
+            }
         }
 
     }

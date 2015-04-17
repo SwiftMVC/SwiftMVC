@@ -5,6 +5,7 @@
  *
  * @author Faizan Ayubi
  */
+
 namespace Framework\Template {
 
     use Framework\Base as Base;
@@ -22,9 +23,11 @@ namespace Framework\Template {
             if (empty($node["delimiter"])) {
                 return null;
             }
+
             if (!empty($node["tag"])) {
                 return $this->_map[$node["delimiter"]]["tags"][$node["tag"]]["handler"];
             }
+
             return $this->_map[$node["delimiter"]]["handler"];
         }
 
@@ -32,6 +35,7 @@ namespace Framework\Template {
          * The handle() method uses the _handler() method to get the correct handler method, 
          * and executes it, throwing a Template\Exception\Implementation exception 
          * if there was a problem executing the statement’s handler.
+         * 
          * @param type $node
          * @param type $content
          * @return type
@@ -55,12 +59,14 @@ namespace Framework\Template {
             $type = null;
             $delimiter = null;
 
-            foreach ($this->_map as $_delimiter =>$_type) {
+            foreach ($this->_map as $_delimiter => $_type) {
                 if (!$delimiter || StringMethods::indexOf($source, $type["opener"]) == -1) {
                     $delimiter = $_delimiter;
                     $type = $_type;
                 }
+
                 $indexOf = StringMethods::indexOf($source, $_type["opener"]);
+
                 if ($indexOf > -1) {
                     if (StringMethods::indexOf($source, $type["opener"]) > $indexOf) {
                         $delimiter = $_delimiter;
@@ -68,10 +74,15 @@ namespace Framework\Template {
                     }
                 }
             }
+
             if ($type == null) {
                 return null;
             }
-            return array( "type" => $type, "delimiter" => $delimiter );
+
+            return array(
+                "type" => $type,
+                "delimiter" => $delimiter
+            );
         }
 
     }

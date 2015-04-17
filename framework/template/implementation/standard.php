@@ -17,6 +17,8 @@ namespace Framework\Template\Implementation {
          * list of language tags for template dialect,
          * parser can know what the different types of template tags are,
          * and how to parse them
+         * 
+         * @var type 
          */
         protected $_map = array(
             "echo" => array(
@@ -36,7 +38,8 @@ namespace Framework\Template\Implementation {
                     "foreach" => array(
                         "isolated" => false,
                         "arguments" => "{element} in {object}",
-                        "handler" => "_each"),
+                        "handler" => "_each"
+                    ),
                     "for" => array(
                         "isolated" => false,
                         "arguments" => "{element} in {object}",
@@ -74,6 +77,7 @@ namespace Framework\Template\Implementation {
         /**
          * Converts the string “{echo $hello}” to “$_text[] = $hello”, 
          * so that it is already optimized for our final evaluated function.
+         * 
          * @param type $tree
          * @param type $content
          * @return type
@@ -103,9 +107,9 @@ namespace Framework\Template\Implementation {
         protected function _each($tree, $content) {
             $object = $tree["arguments"]["object"];
             $element = $tree["arguments"]["element"];
+
             return $this->_loop(
-                $tree,
-                "foreach ({$object} as {$element}_i = > {$element}) {
+                            $tree, "foreach ({$object} as {$element}_i => {$element}) {
                     {$content}
                 }"
             );
@@ -120,9 +124,9 @@ namespace Framework\Template\Implementation {
         protected function _for($tree, $content) {
             $object = $tree["arguments"]["object"];
             $element = $tree["arguments"]["element"];
+
             return $this->_loop(
-                $tree,
-                "for ({$element}_i = 0; {$element}_i < sizeof({$object}); {$element}_i++) {
+                            $tree, "for ({$element}_i = 0; {$element}_i < sizeof({$object}); {$element}_i++) {
                     {$element} = {$object}[{$element}_i];
                     {$content}
                 }"
@@ -146,6 +150,7 @@ namespace Framework\Template\Implementation {
         /**
          * Creates the string representation of a function, based on the contents of a {macro...}...{/macro} tag set.
          * It is possible, using the {macro} tag, to define functions, which we then use within our templates.
+         * 
          * @param type $tree
          * @param type $content
          * @return type
@@ -154,6 +159,7 @@ namespace Framework\Template\Implementation {
             $arguments = $tree["arguments"];
             $name = $arguments["name"];
             $args = $arguments["args"];
+
             return "function {$name}({$args}) {
                 \$_text = array();
                 {$content}
@@ -176,9 +182,11 @@ namespace Framework\Template\Implementation {
             $number = $tree["number"];
             $object = $tree["arguments"]["object"];
             $children = $tree["parent"]["children"];
+
             if (!empty($children[$number + 1]["tag"]) && $children[$number + 1]["tag"] == "else") {
                 return "if (is_array({$object}) && sizeof({$object}) > 0) {{$inner}}";
-            } return $inner;
+            }
+            return $inner;
         }
 
     }

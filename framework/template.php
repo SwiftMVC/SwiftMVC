@@ -41,9 +41,14 @@ namespace Framework {
          */
         protected $_function;
 
+        public function _getExceptionForImplementation($method) {
+            return new Exception\Implementation("{$method} method not implemented");
+        }
+
         /**
          * Used for any of the statements, if they have a specific argument format (such as for, foreach, or macro).
          * It returns the bits between the {...} characters in a neat associative array.
+         * 
          * @param type $source
          * @param type $expression
          * @return type
@@ -187,7 +192,7 @@ namespace Framework {
          * while additional metadata is generated and assigned with the tags.
          * 
          * @param type $array
-         * @return type
+         * @return array
          */
         protected function _tree($array) {
             $root = array(
@@ -279,6 +284,7 @@ namespace Framework {
         /**
          * It wraps the processed template within the $_header and $_footer variables.
          * This is then evaluated with a call to PHP’s create_function method and assigned to the protected $_function property.
+         * 
          * @param type $template
          * @return \Framework\Template
          * @throws Exception\Implementation
@@ -300,6 +306,7 @@ namespace Framework {
         /**
          * Check for the existence of the protected $_function property and throws a Template\Exception\Parser exception
          * if it is not present. It then tries to execute the generated function with the $data passed to it.
+         * 
          * @param type $data
          * @return type
          * @throws Exception\Parser
@@ -315,10 +322,6 @@ namespace Framework {
             } catch (\Exception $e) {
                 throw new Exception\Parser($e);
             }
-        }
-
-        public function _getExceptionForImplementation($method) {
-            return new Exception\Implementation("{$method} method not implemented");
         }
 
     }

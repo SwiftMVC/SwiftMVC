@@ -1,11 +1,11 @@
 <?php
 
-namespace Framework\Template
-{
+namespace Framework\Template {
+
     use Framework\Core as Core;
-    
-    class Exception extends Core\Exception
-    {
+
+    class Exception extends Core\Exception {
         
     }
+
 }

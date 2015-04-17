@@ -23,13 +23,12 @@ namespace Framework\Router\Route {
                 // no keys in the pattern, return a simple match
                 return preg_match("#^{$pattern}$#", $url);
             }
-
             // normalize route pattern
-            $pattern = preg_replace("#(:[a-zA-Z0-9]+)#", "([a-zA-Z0-9-_]+)", $pattern);
+            $pattern = preg_replace("#(:[a-zA-Z0-9]+)#", "([a-zA-Z0-9-+_ ]+)", $pattern);
             
             // check values
             preg_match_all("#^{$pattern}$#", $url, $values);
-            
+
             if (sizeof($values) && sizeof($values[0]) && sizeof($values[1])) {
                 // unset the matched url
                 unset($values[0]);

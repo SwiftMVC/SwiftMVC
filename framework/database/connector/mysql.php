@@ -52,7 +52,6 @@ namespace Framework\Database\Connector {
         protected function _isValidService() {
             $isEmpty = empty($this->_service);
             $isInstance = $this->_service instanceof \MySQLi;
-
             if ($this->isConnected && $isInstance && !$isEmpty) {
                 return true;
             }

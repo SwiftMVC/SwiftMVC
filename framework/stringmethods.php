@@ -158,7 +158,7 @@ namespace Framework {
             return $result;
         }
 
-        function plural($string) {
+        public static function plural($string) {
             $result = $string;
 
             foreach (self::$_plural as $rule => $replacement) {

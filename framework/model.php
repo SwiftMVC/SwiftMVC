@@ -30,7 +30,7 @@ namespace Framework {
         /**
          * @read
          */
-        protected $_types = array("autonumber", "text", "integer", "decimal", "boolean", "datetime");
+        protected $_types = array("autonumber", "text", "integer", "decimal", "boolean", "datetime", "date", "time");
 
         /**
          * @read
@@ -191,7 +191,8 @@ namespace Framework {
             $class = get_class($this);
             foreach ($query->all() as $row) {
                 $rows[] = new $class($row);
-            } return $rows;
+            }
+            return $rows;
         }
 
         /**
@@ -260,7 +261,7 @@ namespace Framework {
          */
         public function getTable() {
             if (empty($this->_table)) {
-                $this->_table = strtolower(StringMethods::singular(get_class($this)));
+                $this->_table = strtolower(StringMethods::plural(get_class($this)));
             } return $this->_table;
         }
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of view
+ * Class to instantiate view of controller/action
  *
  * @author Faizan Ayubi
  */

@@ -44,7 +44,7 @@ namespace Framework\Template\Implementation {
                     "closer" => "}",
                     "handler" => "ayield"
                 )
-            ) + $this->_map;
+                    ) + $this->_map;
 
             $this->_map["statement"]["tags"] = array(
                 "set" => array(
@@ -62,7 +62,7 @@ namespace Framework\Template\Implementation {
                     "arguments" => "{key}",
                     "handler" => "prepend"
                 )
-            ) + $this->_map["statement"]["tags"];
+                    ) + $this->_map["statement"]["tags"];
         }
 
         /**
@@ -94,7 +94,6 @@ namespace Framework\Template\Implementation {
          * @param type $tree
          * @param type $content
          * @return type
-         * 
          */
         protected function _partial($tree, $content) {
             $address = trim($tree["raw"], " /");
@@ -187,7 +186,7 @@ namespace Framework\Template\Implementation {
             }
 
             $previous = $this->_getValue($key);
-            $this->set($key, $value.$previous);
+            $this->set($key, $value . $previous);
         }
 
         public function ayield($tree, $content) {
@@ -197,5 +196,5 @@ namespace Framework\Template\Implementation {
         }
 
     }
-    
+
 }

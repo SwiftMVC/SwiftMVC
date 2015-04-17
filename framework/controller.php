@@ -77,6 +77,24 @@ namespace Framework {
             parent::__construct($options);
             Events::fire("framework.controller.construct.before", array($this->name));
 
+            $router = Registry::get("router");
+
+            switch ($router->getExtension()) {
+                case "json":
+                    $this->defaultContentType = "application/json";
+                    $this->defaultExtension = $router->getExtension();
+                    break;
+
+                default:
+                    break;
+            }
+
+            $this->setLayout();
+
+            Events::fire("framework.controller.construct.after", array($this->name));
+        }
+
+        protected function setLayout() {
             if ($this->willRenderLayoutView) {
                 $defaultPath = $this->defaultPath;
                 $defaultLayout = $this->defaultLayout;
@@ -100,10 +118,8 @@ namespace Framework {
 
                 $this->actionView = $view;
             }
-
-            Events::fire("framework.controller.construct.after", array($this->name));
         }
-        
+
         protected function getName() {
             if (empty($this->_name)) {
                 $this->_name = get_class($this);
@@ -127,6 +143,30 @@ namespace Framework {
             try {
                 if ($doAction) {
                     $view = $this->actionView;
+
+                    if ($this->defaultExtension == "json") {
+                        $obj = array();
+                        $data = $view->data;
+                        foreach ($data as $keys => $values) {
+                            switch (gettype($values)){
+                                case 'object':
+                                    $obj[$keys] = $values->getJsonData();
+                                    break;
+                                case 'array':
+                                    foreach ($values as $key => $value){
+                                        $obj[$keys][] = $value->getJsonData();
+                                    }
+                                    break;
+                                default :
+                                    $obj[$keys] = $values;
+                                    break;
+                                    
+                            }
+                        }
+                        
+                        echo json_encode($obj, JSON_PRETTY_PRINT);
+                    }
+
                     $results = $view->render();
 
                     $this

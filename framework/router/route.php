@@ -6,6 +6,7 @@ namespace Framework\Router {
     use Framework\Router\Exception as Exception;
 
     class Route extends Base {
+
         /**
          * @readwrite
          */

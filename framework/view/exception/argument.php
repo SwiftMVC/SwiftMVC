@@ -1,11 +1,11 @@
 <?php
 
-namespace Framework\View\Exception
-{
+namespace Framework\View\Exception {
+
     use Framework\Core as Core;
-    
-    class Argument extends Core\Exception\Argument
-    {
+
+    class Argument extends Core\Exception\Argument {
         
     }
+
 }

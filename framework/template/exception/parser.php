@@ -1,11 +1,11 @@
 <?php
 
-namespace Framework\Template\Exception
-{
+namespace Framework\Template\Exception {
+
     use Framework\Template as Template;
-    
-    class Parser extends Template\Exception
-    {
-    
+
+    class Parser extends Template\Exception {
+        
     }
+
 }

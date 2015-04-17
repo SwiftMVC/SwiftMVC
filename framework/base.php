@@ -13,7 +13,7 @@ namespace Framework {
 
         public function __construct($options = array()) {
             $this->_inspector = new Inspector($this);
-
+            
             if (is_array($options) || is_object($options)) {
                 foreach ($options as $key => $value) {
                     $key = ucfirst($key);
@@ -28,7 +28,7 @@ namespace Framework {
                 throw new Exception("Call parent::__construct!");
             }
 
-            $getMatches = StringMethods::match($name, "^get([a-zA-Z0-9]+)$");
+            $getMatches = StringMethods::match($name, "^get([a-zA-Z0-9_]+)$");
             if (sizeof($getMatches) > 0) {
                 $normalized = lcfirst($getMatches[0]);
                 $property = "_{$normalized}";
@@ -48,11 +48,10 @@ namespace Framework {
                 }
             }
 
-            $setMatches = StringMethods::match($name, "^set([a-zA-Z0-9]+)$");
+            $setMatches = StringMethods::match($name, "^set([a-zA-Z0-9_]+)$");
             if (sizeof($setMatches) > 0) {
                 $normalized = lcfirst($setMatches[0]);
                 $property = "_{$normalized}";
-
                 if (property_exists($this, $property)) {
                     $meta = $this->_inspector->getPropertyMeta($property);
 
