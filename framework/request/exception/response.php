@@ -1,11 +1,11 @@
 <?php
 
-namespace Framework\Request\Exception
-{
+namespace Framework\Request\Exception {
+
     use Framework\Request as Request;
-    
-    class Response extends Request\Exception
-    {
-    
+
+    class Response extends Request\Exception {
+        
     }
+
 }

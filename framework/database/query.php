@@ -124,7 +124,7 @@ namespace Framework\Database {
                 $_offset = $this->offset;
 
                 if ($_offset) {
-                    $limit = "LIMIT {$_limit}, {$_offset}";
+                    $limit = "LIMIT {$_offset}, {$_limit}";
                 } else {
                     $limit = "LIMIT {$_limit}";
                 }

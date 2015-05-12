@@ -1,11 +1,11 @@
 <?php
 
-namespace Framework\Request\Exception
-{
+namespace Framework\Request\Exception {
+
     use Framework\Core as Core;
-    
-    class Implementation extends Core\Exception\Implementation
-    {
-    
+
+    class Implementation extends Core\Exception\Implementation {
+        
     }
+
 }

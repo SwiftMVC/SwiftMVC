@@ -173,6 +173,30 @@ namespace Framework {
             return $result;
         }
 
+        public static function datetime_to_text($datetime = "") {
+            if ($datetime == '0000-00-00 00:00:00') {
+                return "Not Specified";
+            } else {
+                $unixdatetme = strtotime($datetime);
+                return strftime("%B %d %Y at %I:%M %p", $unixdatetme);
+            }
+        }
+
+        public static function only_date($datetime = "") {
+            if ($datetime == '0000-00-00 00:00:00') {
+                return 'Not Specified';
+            } else {
+                $unixdatetme = strtotime($datetime);
+                return strftime("%B %d %Y", $unixdatetme);
+            }
+        }
+
+        public static function url($url) {
+            $pattern = array(' ', '?', '.', ':', '\'', '/', '(', ')', ',', '&');
+            $replace = array('-', '', '', '', '', '', '', '', '', '');
+            return urlencode(str_replace($pattern, $replace, $url));
+        }
+
     }
 
 }

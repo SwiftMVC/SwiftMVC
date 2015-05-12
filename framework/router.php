@@ -108,15 +108,14 @@ namespace Framework {
                     $action = $parts[1];
                     $parameters = array_slice($parts, 2);
                 }
-
-                if (!$this->classExists($controller)) {
+                
+                if (!$this->controllerExists($controller)) {
                     foreach ($this->_routes as $route) {
                         $matches = $route->matches($url);
                         if ($matches) {
                             $controller = $route->controller;
                             $action = $route->action;
                             $parameters = $route->parameters;
-
                             Events::fire("framework.router.dispatch.after", array($url, $controller, $action, $parameters));
                             $this->_pass($controller, $action, $parameters);
                             return;
@@ -204,8 +203,8 @@ namespace Framework {
             Registry::erase("controller");
         }
 
-        public function classExists($class) {
-            $path = "C:/wamp/www/swiftintern/application/controllers";
+        public function controllerExists($class) {
+            $path = APP_PATH . "/application/controllers";
             $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE;
             $file = strtolower(str_replace("\\", DIRECTORY_SEPARATOR, trim($class, "\\"))) . ".php";
 
