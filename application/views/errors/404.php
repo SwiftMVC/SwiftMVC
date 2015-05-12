@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Social Network</title>
+        <title>SwiftMVC Framework</title>
     </head>
     <body>
         error 404

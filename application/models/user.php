@@ -68,35 +68,4 @@ class User extends Shared\Model {
     */
     protected $_admin = false;
 
-    public function isFriend($id) {
-        $friend = Friend::first(array(
-                    "user" => $this->getId(),
-                    "friend" => $id
-        ));
-
-        if ($friend) {
-            return true;
-        }
-        return false;
-    }
-
-    public static function hasFriend($id, $friend) {
-        $user = new self(array(
-            "id" => $id
-        ));
-        return $user->isFriend($friend);
-    }
-
-    /**
-     * Retursn the latest File row
-     * @return type
-     */
-    public function getFile() {
-        return File::first(array(
-            "user = ?" => $this->id,
-            "live = ?" => true,
-            "deleted = ?" => false
-        ), array("*"), "id", "DESC");
-    }
-
 }
