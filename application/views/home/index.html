@@ -1,20 +1,17 @@
-<h1>Home</h1>
-{if isset($messages)}
-    {foreach $message in $messages}
-        {echo $message->body}<br />
-        {foreach $reply in Message::fetchReplies($message->id)}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{echo $reply->body}<br />
-        {/foreach}
-        <form method="post" action="/messages/add.html">
-            <textarea name="body"></textarea>
-            <input type="hidden" value="{echo $message->id}" name="message" />
-            <input type="submit" name="share" value="share" />
-        </form>
-    {/foreach}
-{/if}
-{if (isset($user))}
-    <form method="post" action="/messages/add.html">
-        <textarea name="body"></textarea>
-        <input type="submit" name="share" value="share" />
-    </form>
-{/if}
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <h1>A PHP MVC Framework</h1>
+            <p class="lead">Contains Many Features</p>
+            <ul class="list-unstyled">
+                <li>Bootstrap v3.3.1</li>
+                <li>jQuery v2.11.1</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /.container -->
