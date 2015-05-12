@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 define("DEBUG", TRUE);
 
 // 1. define the default path for includes
@@ -8,10 +8,10 @@ define("DEBUG", TRUE);
 define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(dirname(__FILE__))));
 
 try {
-
-    // imagine library's class autoloader
+    
+    // library's class autoloader
     spl_autoload_register(function($class) {
-        $path = lcfirst(str_replace("\\", DIRECTORY_SEPARATOR, $class));
+        $path = str_replace("\\", DIRECTORY_SEPARATOR, $class);
         $file = APP_PATH . "/application/libraries/{$path}.php";
 
         if (file_exists($file)) {
@@ -21,7 +21,7 @@ try {
     });
 
     // 2. load the Core class that includes an autoloader
-    require("../framework/core.php");
+    require("framework/core.php");
     Framework\Core::initialize();
 
     // plugins
@@ -60,7 +60,7 @@ try {
     Framework\Registry::set("router", $router);
 
     // include custom routes 
-    include("routes.php");
+    include("public/routes.php");
 
     // 8. dispatch the current request 
     $router->dispatch();
@@ -159,7 +159,7 @@ try {
     
     // render fallback template
     header("Content-type: text/html");
-    echo "An error occurred.";
+    echo "An error occurred.". $e;
     exit;
 }
 ?>
