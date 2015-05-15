@@ -7,3 +7,6 @@ The Framework is in the Framework Folder.
 
 ### Application
 I have built a simple Social Network Application on this Framework
+
+### Tests
+To be added soon
