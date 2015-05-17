@@ -8,6 +8,10 @@ namespace Framework {
     use Framework\Registry as Registry;
     use Framework\Cache\Exception as Exception;
 
+    /**
+     * Factory Class which accepts initialization options, and also selects the type of returned object, based on the internal $_type property.
+     * It raises Cache\Exception\Argument exceptions for invalid/unsupported types, and only supports one type of cache driver, Cache\Driver\Memcached.
+     */
     class Cache extends Base {
 
         /**

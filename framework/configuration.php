@@ -7,6 +7,9 @@ namespace Framework {
     use Framework\Configuration as Configuration;
     use Framework\Configuration\Exception as Exception;
 
+    /**
+     * Factory class which can be extended to add more drivers
+     */
     class Configuration extends Base {
 
         /**

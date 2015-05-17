@@ -2,8 +2,16 @@
 
 namespace Framework {
 
+    /**
+     * Utility methods for working with the basic data types we ﬁnd in PHP
+     */
     class StringMethods {
 
+        /**
+         *for the normalization of regular expression strings, so that the remaining methods can operate on them 
+         * without ﬁrst having to check or normalize them.
+         * @var type 
+         */
         private static $_delimiter = "#";
         private static $_singular = array(
             "(matr)ices$" => "\\1ix",
@@ -64,6 +72,12 @@ namespace Framework {
             // do nothing
         }
 
+        /**
+         * For the normalization of regular expression strings, so that the remaining methods can operate on them
+         * without ﬁrst having to check or normalize them. 
+         * @param type $pattern
+         * @return type
+         */
         private static function _normalize($pattern) {
             return self::$_delimiter . trim($pattern, self::$_delimiter) . self::$_delimiter;
         }
@@ -76,6 +90,14 @@ namespace Framework {
             self::$_delimiter = $delimiter;
         }
 
+        /**
+         * Perform similarly to the preg_match_all() and preg_split() functions, but require less formal structure to the regular expressions,
+         * and return a more predictable set of results
+         * 
+         * @param type $string
+         * @param type $pattern
+         * @return type return the ﬁrst captured substring, the entire substring match, or null
+         */
         public static function match($string, $pattern) {
             preg_match_all(self::_normalize($pattern), $string, $matches, PREG_PATTERN_ORDER);
 
@@ -90,6 +112,15 @@ namespace Framework {
             return null;
         }
 
+        /**
+         * Perform similarly to the preg_split() functions, but require less formal structure to the regular expressions,
+         * and return a more predictable set of results
+         * 
+         * @param type $string
+         * @param type $pattern
+         * @param type $limit
+         * @return type return the results of a call to the preg_split() function, after setting some ﬂags and normalizing the regular expression.
+         */
         public static function split($string, $pattern, $limit = null) {
             $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE;
             return preg_split(self::_normalize($pattern), $string, $limit, $flags);

@@ -3,7 +3,7 @@
 namespace Framework {
 
     /**
-     * ArrayMethods
+     * Utility methods for working with the basic data types we ﬁnd in PHP
      */
     class ArrayMethods {
 
@@ -62,12 +62,22 @@ namespace Framework {
             } return $result;
         }
 
+        /**
+         * Removes all values considered empty() and returns the resultant array
+         * @param type $array
+         * @return type the resultant array
+         */
         public static function clean($array) {
             return array_filter($array, function ($item) {
                 return !empty($item);
             });
         }
 
+        /**
+         * Returns an array, which contains all the items of the initial array, after they have been trimmed of all whitespace.
+         * @param type $array
+         * @return type array trimmed
+         */
         public static function trim($array) {
             return array_map(function ($item) {
                 return trim($item);

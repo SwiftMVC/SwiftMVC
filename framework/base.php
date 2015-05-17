@@ -7,6 +7,9 @@ namespace Framework {
     use Framework\StringMethods as StringMethods;
     use Framework\Core\Exception as Exception;
 
+    /**
+     * All our framework classes inherit from one base class
+     */
     class Base {
 
         private $_inspector;
@@ -23,6 +26,14 @@ namespace Framework {
             }
         }
 
+        /**
+         * Checking to see that the inspector is set, handling the getProperty() methods, and handling the setProperty() methods.
+         * @param type $name
+         * @param type $arguments
+         * @return \Framework\Base
+         * @throws Exception
+         * @throws type
+         */
         public function __call($name, $arguments) {
             if (empty($this->_inspector)) {
                 throw new Exception("Call parent::__construct!");
