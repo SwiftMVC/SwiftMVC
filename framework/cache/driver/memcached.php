@@ -113,6 +113,12 @@ namespace Framework\Cache\Driver {
             return $this;
         }
 
+        /**
+         * Erase value of key
+         * @param type $key
+         * @return \Framework\Cache\Driver\Memcached
+         * @throws Exception\Service
+         */
         public function erase($key) {
             if (!$this->_isValidService()) {
                 throw new Exception\Service("Not connected to a valid service");
