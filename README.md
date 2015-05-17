@@ -1,12 +1,19 @@
 # SwiftMVC
-A Swift PHP MVC Framework with Test and a Simple Social Network App Buld on it
+![Framework](https://github.com/SwiftMVC/SwiftMVC/blob/master/public/assets/images/header.png?raw=true)
+SwiftMVC is a PHP MVC Framework with easy application Test, easy to use, fast to develop application and can be extended with any PHP library with caching
 
-### Framework
-It is Build with Singleton, Registry, Factory and Observer Pattern of PHP and it is OOP Focussed.
-The Framework is in the Framework Folder.
+### Documentation
+Visit wiki pages
 
-### Application
-I have built a simple Social Network Application on this Framework
+### Requirements
+- Apache Web Server or equivalent with mod rewrite support.
+- PHP 5.3 or greater is required
+
+### Installation
+1. Download the SwiftMVC framework
+2. Unzip the package.
+3. Open the public/routes.php file with a text editor, setup your routes.
+4. Open application/configuration/database.ini and set your database credentials (if a database is needed).
 
 ### Tests
 To be added soon
