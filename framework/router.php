@@ -16,6 +16,9 @@ namespace Framework {
     use Framework\Inspector as Inspector;
     use Framework\Router\Exception as Exception;
 
+    /**
+     * Represent the different kinds of routes that we can define in our framework’s configuration.
+     */
     class Router extends Base {
 
         /**

@@ -4,6 +4,9 @@ namespace Framework\Router\Route {
 
     use Framework\Router as Router;
 
+    /**
+     * Responsible for matching Routes
+     */
     class Regex extends Router\Route {
 
         /**

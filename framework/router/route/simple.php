@@ -5,6 +5,9 @@ namespace Framework\Router\Route {
     use Framework\Router as Router;
     use Framework\ArrayMethods as ArrayMethods;
 
+    /**
+     * Responsible for matching Routes format of :property
+     */
     class Simple extends Router\Route {
 
         /**

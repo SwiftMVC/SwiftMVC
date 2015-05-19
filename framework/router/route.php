@@ -5,6 +5,9 @@ namespace Framework\Router {
     use Framework\Base as Base;
     use Framework\Router\Exception as Exception;
 
+    /**
+     * Contain information about the URL requested.
+     */
     class Route extends Base {
 
         /**
