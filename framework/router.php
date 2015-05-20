@@ -132,6 +132,20 @@ namespace Framework {
             Events::fire("framework.router.dispatch.after", array($url, $controller, $action, $parameters));
         }
 
+        /**
+         * It first modifies the requested class (passed from the _dispatch() method) , so that the first letter is in uppercase.
+         * It immediately sets the protected $_controller and $_action properties to the correct values, and tries to create a new instance of the Controller class, 
+         * passing in a reference to itself, and the provided $parameters array. Since our autoload() function throws an exception if the class cannot be found, 
+         * we can assume that the controller was either loaded, or doesn’t exist, which then raises a Router\Exception\Controller exception. 
+         * Our _pass() method then checks whether the Controller class has a method that matches the $action required. 
+         * If not, it will raise a Router\Exception\Action exception.
+         * 
+         * @param type $controller
+         * @param type $action
+         * @param type $parameters
+         * @throws Exception\Controller
+         * @throws Exception\Action
+         */
         protected function _pass($controller, $action, $parameters = array()) {
             $name = ucfirst($controller);
 
@@ -206,6 +220,11 @@ namespace Framework {
             Registry::erase("controller");
         }
 
+        /**
+         * Checks if Controller Exists and return 1 when exists
+         * @param type $class
+         * @return int
+         */
         public function controllerExists($class) {
             $path = APP_PATH . "/application/controllers";
             $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE;

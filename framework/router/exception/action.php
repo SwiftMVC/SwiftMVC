@@ -1,11 +1,11 @@
 <?php
 
-namespace Framework\Router\Exception
-{
+namespace Framework\Router\Exception {
+
     use Framework\Router as Router;
-    
-    class Action extends Router\Exception
-    {
+
+    class Action extends Router\Exception {
         
     }
+
 }
