@@ -66,7 +66,9 @@ namespace Framework\Template\Implementation {
         }
 
         /**
-         * Fetch a subtemplate and place it within the main template
+         * Fetch a subtemplate and place it within the main template. The subtemplate should be processed at the same time 
+         * as the main template, so that any logic can happen at the same time.
+         * 
          * @param type $tree
          * @param type $content
          * @return type
@@ -171,6 +173,11 @@ namespace Framework\Template\Implementation {
             $this->_setValue($key, $value);
         }
 
+        /**
+         * Allow either a string or node tree to be supplied as the $key. If a node tree is provided, the _getKey() method will be used to extract the storage key needed.
+         * @param type $key
+         * @param type $value
+         */
         public function append($key, $value) {
             if (is_array($key)) {
                 $key = $this->_getKey($key);
@@ -180,6 +187,11 @@ namespace Framework\Template\Implementation {
             $this->set($key, $previous . $value);
         }
 
+        /**
+         * Allow either a string or node tree to be supplied as the $key. If a node tree is provided, the _getKey() method will be used to extract the storage key needed.
+         * @param type $key
+         * @param type $value
+         */
         public function prepend($key, $value) {
             if (is_array($key)) {
                 $key = $this->_getKey($key);
@@ -189,6 +201,12 @@ namespace Framework\Template\Implementation {
             $this->set($key, $value . $previous);
         }
 
+        /**
+         * Simplest of all the new constructs, and does pretty much the same thing as the standard implementation’s _literal() handler method.
+         * @param type $tree
+         * @param type $content
+         * @return type
+         */
         public function ayield($tree, $content) {
             $key = trim($tree["raw"]);
             $value = addslashes($this->_getValue($key));
