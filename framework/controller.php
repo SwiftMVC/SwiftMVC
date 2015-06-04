@@ -150,7 +150,11 @@ namespace Framework {
                         foreach ($data as $keys => $values) {
                             switch (gettype($values)){
                                 case 'object':
-                                    $obj[$keys] = $values->getJsonData();
+                                    if(get_class($values) == "stdClass"){
+                                        $obj[$keys] = $values;
+                                    } else {
+                                        $obj[$keys] = $values->getJsonData();
+                                    }
                                     break;
                                 case 'array':
                                     foreach ($values as $key => $value){
