@@ -457,6 +457,28 @@ namespace Framework {
             return !sizeof($this->errors);
         }
 
+        public function getJsonData() {
+            $this->removeProperty($this);
+            $var = get_object_vars($this);
+            foreach($var as &$value){
+                if(is_object($value) && method_exists($value,'getJsonData')){
+                    $value = $value->getJsonData();
+                }
+            }
+            return $var;
+        }
+        
+        public function removeProperty() {
+            unset($this->_connector);
+            unset($this->_table);
+            unset($this->_types);
+            unset($this->_columns);
+            unset($this->_primary);
+            unset($this->_validators);
+            unset($this->_errors);
+        }
+        
+
     }
 
 }
