@@ -147,29 +147,29 @@ namespace Framework {
                     if ($this->defaultExtension == "json") {
                         $obj = array();
                         $data = $view->data;
-                        if(!empty($data)){
+
+                        if ($data) {
                             foreach ($data as $keys => $values) {
-                                switch (gettype($values)){
+                                switch (gettype($values)) {
                                     case 'object':
-                                        if(get_class($values) == "stdClass"){
+                                        if (get_class($values) == "stdClass") {
                                             $obj[$keys] = $values;
                                         } else {
                                             $obj[$keys] = $values->getJsonData();
                                         }
                                         break;
                                     case 'array':
-                                        foreach ($values as $key => $value){
+                                        foreach ($values as $key => $value) {
                                             $obj[$keys][] = $value->getJsonData();
                                         }
                                         break;
                                     default :
                                         $obj[$keys] = $values;
                                         break;
-                                        
                                 }
                             }
                         }
-                        
+
                         echo json_encode($obj, JSON_PRETTY_PRINT);
                     }
 

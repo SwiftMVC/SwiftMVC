@@ -16,9 +16,6 @@ namespace Framework {
     use Framework\Inspector as Inspector;
     use Framework\Router\Exception as Exception;
 
-    /**
-     * Represent the different kinds of routes that we can define in our framework’s configuration.
-     */
     class Router extends Base {
 
         /**
@@ -95,57 +92,40 @@ namespace Framework {
          * @return type
          */
         public function dispatch() {
-            $url = $this->url;
+            $url= $this->url;
             $parameters = array();
             $controller = "index";
             $action = "index";
-
+        
             Events::fire("framework.router.dispatch.before", array($url));
-
+                    
+            foreach ($this->_routes as $route) {
+                $matches = $route->matches($url);
+                if ($matches) {
+                    $controller = $route->controller;
+                    $action = $route->action;
+                    $parameters = $route->parameters;
+                    
+                    Events::fire("framework.router.dispatch.after", array($url, $controller, $action, $parameters));
+                    $this->_pass($controller, $action, $parameters);
+                    return;
+                }
+            }
+                    
             $parts = explode("/", trim($url, "/"));
-
             if (sizeof($parts) > 0) {
                 $controller = $parts[0];
-
+                
                 if (sizeof($parts) >= 2) {
                     $action = $parts[1];
                     $parameters = array_slice($parts, 2);
                 }
-                
-                if (!$this->controllerExists($controller)) {
-                    foreach ($this->_routes as $route) {
-                        $matches = $route->matches($url);
-                        if ($matches) {
-                            $controller = $route->controller;
-                            $action = $route->action;
-                            $parameters = $route->parameters;
-                            Events::fire("framework.router.dispatch.after", array($url, $controller, $action, $parameters));
-                            $this->_pass($controller, $action, $parameters);
-                            return;
-                        }
-                    }
-                }
             }
-
-            $this->_pass($controller, $action, $parameters);
-
+            
             Events::fire("framework.router.dispatch.after", array($url, $controller, $action, $parameters));
+            $this->_pass($controller, $action, $parameters);
         }
 
-        /**
-         * It first modifies the requested class (passed from the _dispatch() method) , so that the first letter is in uppercase.
-         * It immediately sets the protected $_controller and $_action properties to the correct values, and tries to create a new instance of the Controller class, 
-         * passing in a reference to itself, and the provided $parameters array. Since our autoload() function throws an exception if the class cannot be found, 
-         * we can assume that the controller was either loaded, or doesn’t exist, which then raises a Router\Exception\Controller exception. 
-         * Our _pass() method then checks whether the Controller class has a method that matches the $action required. 
-         * If not, it will raise a Router\Exception\Action exception.
-         * 
-         * @param type $controller
-         * @param type $action
-         * @param type $parameters
-         * @throws Exception\Controller
-         * @throws Exception\Action
-         */
         protected function _pass($controller, $action, $parameters = array()) {
             $name = ucfirst($controller);
 
@@ -216,15 +196,9 @@ namespace Framework {
             Events::fire("framework.router.afterhooks.after", array($action, $parameters));
 
             // unset controller
-
             Registry::erase("controller");
         }
 
-        /**
-         * Checks if Controller Exists and return 1 when exists
-         * @param type $class
-         * @return int
-         */
         public function controllerExists($class) {
             $path = APP_PATH . "/application/controllers";
             $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE;
