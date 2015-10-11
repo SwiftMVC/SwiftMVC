@@ -1,8 +1,10 @@
+<IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_URI} !=/favicon.ico
 RewriteRule ^([^.]+)\.?([a-zA-Z]+)?$ index.php?url=$1&extension=$2 [QSA,L]
+</IfModule>
 
 ## EXPIRES CACHING ##
 <IfModule mod_expires.c>
@@ -62,8 +64,3 @@ RewriteRule ^([^.]+)\.?([a-zA-Z]+)?$ index.php?url=$1&extension=$2 [QSA,L]
     </filesMatch>
 </ifModule>
 # END Cache-Control Headers
-
-<ifModule mod_headers.c>
-  Header unset ETag
-</ifModule>
-FileETag None
