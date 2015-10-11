@@ -3,8 +3,6 @@ ob_start();
 define("DEBUG", TRUE);
 
 // 1. define the default path for includes
-//define("APP_PATH", dirname(dirname(__FILE__)));
-
 define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(__FILE__)));
 
 try {
@@ -149,7 +147,7 @@ try {
         foreach ($classes as $class) {
             if ($class == $exception) {
                 header("Content-type: text/html");
-                include(APP_PATH . "/application/views/errors/{$template}.php");
+                include(APP_PATH . "/application/views/layouts/errors/{$template}.php");
                 exit;
             }
         }
