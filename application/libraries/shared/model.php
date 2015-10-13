@@ -29,14 +29,6 @@ namespace Shared {
         /**
          * @column
          * @readwrite
-         * @type boolean
-         * @index
-         */
-        protected $_deleted;
-
-        /**
-         * @column
-         * @readwrite
          * @type datetime
          */
         protected $_created;
