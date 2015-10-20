@@ -5,6 +5,8 @@ define("DEBUG", TRUE);
 // 1. define the default path for includes
 define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(__FILE__)));
 
+date_default_timezone_set('Asia/Kolkata');
+
 try {
     
     // library's class autoloader
