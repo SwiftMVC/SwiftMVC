@@ -167,7 +167,7 @@ namespace Framework\Database\Connector {
                             break;
                         }
                     case "decimal": {
-                            $lines[] = "`{$name}` float DEFAULT NULL";
+                            $lines[] = "`{$name}` DECIMAL({$length}) DEFAULT NULL";
                             break;
                         }
                     case "boolean": {

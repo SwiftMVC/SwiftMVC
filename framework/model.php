@@ -300,13 +300,27 @@ namespace Framework {
                     }
                     return null;
                 };
+                $decimal = function($array, $key) {
+                    if (!empty($array[$key]) && sizeof($array[$key]) == 2) {
+                        return implode(",", $array[$key]);
+                    }
+                    return null;
+                };
                 foreach ($properties as $property) {
                     $propertyMeta = $inspector->getPropertyMeta($property);
                     if (!empty($propertyMeta["@column"])) {
                         $name = preg_replace("#^_#", "", $property);
                         $primary = !empty($propertyMeta["@primary"]);
                         $type = $first($propertyMeta, "@type");
-                        $length = $first($propertyMeta, "@length");
+                        switch ($type) {
+                            case "decimal":
+                                $length = $decimal($propertyMeta, "@length");
+                                break;
+                            
+                            default:
+                                $length = $first($propertyMeta, "@length");
+                                break;
+                        }
                         $index = !empty($propertyMeta["@index"]);
                         $readwrite = !empty($propertyMeta["@readwrite"]);
                         $read = !empty($propertyMeta["@read"]) || $readwrite;
