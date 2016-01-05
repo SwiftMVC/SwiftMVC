@@ -57,6 +57,10 @@ namespace Framework {
                         return new Cache\Driver\Memcached($this->options);
                         break;
                     }
+                case "mongod": {
+                        return new Cache\Driver\Mongod($this->options);
+                        break;
+                    }
                 default: {
                         throw new Exception\Argument("Invalid type");
                         break;
