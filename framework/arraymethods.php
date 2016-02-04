@@ -84,6 +84,23 @@ namespace Framework {
             }, $array);
         }
 
+        /**
+         * Rearranges the array keys. Useful when taking array inputs in forms
+         */
+        public static function reArray(&$array) {
+            $file_ary = array();
+            $file_keys = array_keys($array);
+            $file_count = count($array[$file_keys[0]]);
+            
+            for ($i = 0; $i < $file_count; $i++) {
+                foreach ($file_keys as $key) {
+                    $file_ary[$i][$key] = $array[$key][$i];
+                }
+            }
+
+            return $file_ary;
+        }
+
     }
 
 }

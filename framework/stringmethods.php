@@ -209,8 +209,13 @@ namespace Framework {
                 return "Not Specified";
             } else {
                 $unixdatetme = strtotime($datetime);
-                return strftime("%B %d %Y at %I:%M %p", $unixdatetme);
+                return strftime("%B %d, %Y at %I:%M %p", $unixdatetme);
             }
+        }
+
+        public static function only_time($datetime = "") {
+            $unixdatetme = strtotime($datetime);
+            return strftime("%I:%M %p", $unixdatetme);
         }
 
         public static function only_date($datetime = "") {
@@ -218,7 +223,7 @@ namespace Framework {
                 return 'Not Specified';
             } else {
                 $unixdatetme = strtotime($datetime);
-                return strftime("%B %d %Y", $unixdatetme);
+                return strftime("%B %d, %Y", $unixdatetme);
             }
         }
 
@@ -226,6 +231,19 @@ namespace Framework {
             $pattern = array(' ', '?', '.', ':', '\'', '/', '(', ')', ',', '&');
             $replace = array('-', '', '', '', '', '', '', '', '', '');
             return urlencode(str_replace($pattern, $replace, $url));
+        }
+
+        /**
+         * Gives a month's start and ending date
+         */
+        public static function month_se() {
+            $start = date('Y-m-01 00:00:00', strtotime('this month'));
+            $end = date('Y-m-t 00:00:00', strtotime('this month'));
+
+            return array(
+                'start' => $start,
+                'end' => $end
+            );
         }
 
     }

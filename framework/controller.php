@@ -154,8 +154,10 @@ namespace Framework {
                                     case 'object':
                                         if (get_class($values) == "stdClass") {
                                             $obj[$keys] = $values;
-                                        } else {
+                                        } elseif (is_a($values, 'Framework\Model')) {
                                             $obj[$keys] = $values->getJsonData();
+                                        } else {
+                                            $obj[$keys] = $values;
                                         }
                                         break;
                                     case 'array':
@@ -163,17 +165,24 @@ namespace Framework {
                                             if (gettype($value) == "object") {
                                                 if (get_class($value) == "stdClass") {
                                                     $obj[$keys][] = $value;
-                                                } else {
+                                                } elseif (is_a($value, 'Framework\Model')) {
                                                     $obj[$keys][] = $value->getJsonData();
+                                                } else {
+                                                    $obj[$keys][] = $value;
                                                 }
                                             } else{
                                                 $obj[$keys] = $values;
                                             }
                                         }
                                         break;
-                                    default :
+                                    case 'string':
+                                    case 'integer':
                                         $obj[$keys] = $values;
                                         break;
+
+                                    default:
+                                        break;
+
                                 }
                             }
                         }
