@@ -147,6 +147,8 @@ namespace Framework\Database\Connector {
                 }
                 if ($column["index"]) {
                     $indices[] = "KEY `{$name}` (`{$name}`)";
+                } elseif ($column["uindex"]) {
+                    $indices[] = "UNIQUE `{$name}` (`{$name}`)";
                 }
 
                 switch ($type) {
@@ -208,7 +210,5 @@ namespace Framework\Database\Connector {
 
             return $this;
         }
-
     }
-
 }

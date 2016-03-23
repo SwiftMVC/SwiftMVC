@@ -94,7 +94,8 @@ namespace Framework {
             Events::fire("framework.controller.construct.after", array($this->name));
         }
 
-        protected function setLayout() {
+        protected function setLayout($layout = "layouts/standard") {
+            $this->defaultLayout = $layout;
             if ($this->willRenderLayoutView) {
                 $defaultPath = $this->defaultPath;
                 $defaultLayout = $this->defaultLayout;

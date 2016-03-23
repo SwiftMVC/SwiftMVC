@@ -5,6 +5,7 @@
  *
  * @author Faizan Ayubi
  */
+namespace Models;
 class User extends Shared\Model {
 
     /**
@@ -34,7 +35,7 @@ class User extends Shared\Model {
      * @readwrite
      * @type text
      * @length 100
-     * @index
+     * @uindex
      * 
      * @validate required, max(100)
      * @label email address

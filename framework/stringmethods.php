@@ -246,6 +246,40 @@ namespace Framework {
             );
         }
 
-    }
+        /**
+         * Generates Unique string
+         */
+        public static function uniqueRandomString($length = 22) {
+            $unique_random_string = md5(uniqid(mt_rand(), true));
+            $base64_string = base64_encode($unique_random_string);
+            $modified_base64_string = str_replace('+', '.', $base64_string);
+            $salt = substr($modified_base64_string, 0, $length);
 
+            return $salt;
+        }
+
+        /**
+         * Encrypts the string using blowfish algorithm
+         */
+        public static function encrypt($string) {
+            $hash_format = "$2y$10$";  //tells PHP to use Blowfish with a "cost" of 10
+            $salt = self::uniqueRandomString();
+            $format_and_salt = $hash_format . $salt;
+            $hash = crypt($string, $format_and_salt);
+            return $hash;
+        }
+
+        /**
+         * Checks hashed password
+         */
+        public static function checkHash($new, $old) {
+            $hash = crypt($new, $old);
+            if ($hash == $old) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+    }
 }

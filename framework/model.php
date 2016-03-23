@@ -190,7 +190,12 @@ namespace Framework {
             } $rows = array();
             $class = get_class($this);
             foreach ($query->all() as $row) {
-                $rows[] = new $class($row);
+                $r = new $class($row);
+                if ($r->id) {
+                    $rows[$r->id] = $r;    
+                } else {
+                    $rows[] = $r;
+                }
             }
             return $rows;
         }
@@ -261,7 +266,8 @@ namespace Framework {
          */
         public function getTable() {
             if (empty($this->_table)) {
-                $this->_table = strtolower(StringMethods::plural(get_class($this)));
+                $name = array_pop(explode("\\", get_class($this)));
+                $this->_table = strtolower(StringMethods::plural($name));
             } return $this->_table;
         }
 
@@ -322,6 +328,7 @@ namespace Framework {
                                 break;
                         }
                         $index = !empty($propertyMeta["@index"]);
+                        $uindex = !empty($propertyMeta["@uindex"]);
                         $readwrite = !empty($propertyMeta["@readwrite"]);
                         $read = !empty($propertyMeta["@read"]) || $readwrite;
                         $write = !empty($propertyMeta["@write"]) || $readwrite;
@@ -340,6 +347,7 @@ namespace Framework {
                             "type" => $type,
                             "length" => $length,
                             "index" => $index,
+                            "uindex" => $uindex,
                             "read" => $read,
                             "write" => $write,
                             "validate" => $validate,
@@ -447,7 +455,8 @@ namespace Framework {
 
                         $template = $defined[$function];
 
-                        if (!call_user_func_array(array($this, $template["handler"]), $arguments)) {
+                        $response = call_user_func_array(array($this, $template["handler"]), $arguments);
+                        if ($response === false || $response === null) {
                             $replacements = array_merge(array(
                                 $label ? $label : $raw
                                     ), $arguments);
@@ -467,8 +476,7 @@ namespace Framework {
                     }
                 }
             }
-
-            return !sizeof($this->errors);
+            return !sizeof($this->_errors);
         }
 
         public function getJsonData() {
@@ -491,8 +499,5 @@ namespace Framework {
             unset($this->_validators);
             unset($this->_errors);
         }
-        
-
     }
-
 }
