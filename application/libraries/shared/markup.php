@@ -20,7 +20,10 @@ namespace Shared {
 
         public static function errors($array, $key, $separator = "<br />", $before = "<br />", $after = "") {
             if (isset($array[$key])) {
-                return $before . join($separator, $array[$key]) . $after;
+                $html = '<span class="help-block" style="color: red;">';
+                $html .= $before . join($separator, $array[$key]) . $after;
+                $html .= '</span>';
+                return $html;
             }
             return "";
         }

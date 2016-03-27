@@ -38,7 +38,8 @@ class Controller extends \Framework\Controller {
         $this->defaultExtension = "json";
     }
 
-    public static function redirect($url) {
+    public function redirect($url) {
+        $this->noview(); // stop rendering of views because it can generate errors
         header("Location: {$url}");
         exit();
     }
