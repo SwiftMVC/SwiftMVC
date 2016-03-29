@@ -18,17 +18,32 @@ namespace Framework {
         private function __clone() {
             // do nothing
         }
-        
-        public static function get($key, $default = "") {
-            if (!empty($_GET[$key])) {
-                return $_GET[$key];
+
+        private static function _test($regex, $value) {
+            if ($regex) {
+                $test = preg_match("/{$regex}/", $value);
+            } else {
+                $test = true;
             }
+
+            if ($test) {
+                return $value;
+            } else {
+                throw new \Exception("Invalid Request for the $key");   
+            }
+        }
+        
+        public static function get($key, $default = "", $regex = false) {
+            if (!empty($_GET[$key])) {
+                return self::_test($regex, $_GET[$key]);
+            }
+
             return $default;
         }
 
-        public static function post($key, $default = "") {
+        public static function post($key, $default = "", $regex = false) {
             if (!empty($_POST[$key])) {
-                return $_POST[$key];
+                return self::_test($regex, $_POST[$key]);
             } return $default;
         }
 
@@ -39,5 +54,4 @@ namespace Framework {
         }
 
     }
-
 }
