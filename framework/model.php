@@ -266,7 +266,8 @@ namespace Framework {
          */
         public function getTable() {
             if (empty($this->_table)) {
-                $name = array_pop(explode("\\", get_class($this)));
+                $name = explode("\\", get_class($this));
+                $name = array_pop($name);
                 $this->_table = strtolower(StringMethods::plural($name));
             } return $this->_table;
         }
@@ -390,7 +391,8 @@ namespace Framework {
         }
 
         protected function _validateRequired($value) {
-            return !empty($value);
+            $value = (string) $value;
+            return (boolean) strlen($value);
         }
 
         protected function _validateAlpha($value) {
