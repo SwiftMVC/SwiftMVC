@@ -56,8 +56,8 @@ namespace Framework {
         protected function _arguments($source, $expression) {
             $args = $this->_array($expression, array(
                 $expression => array(
-                    "opener" => "{",
-                    "closer" => "}"
+                    "opener" => "{{",
+                    "closer" => "}}"
                 )
             ));
 
@@ -67,7 +67,7 @@ namespace Framework {
 
             foreach ($tags as $i => $tag) {
                 $sanitized = str_replace($tag, "(.*)", $sanitized);
-                $tags[$i] = str_replace(array("{", "}"), "", $tag);
+                $tags[$i] = str_replace(array("{{", "}}"), "", $tag);
             }
 
             if (preg_match("#{$sanitized}#", $source, $matches)) {

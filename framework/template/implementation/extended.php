@@ -30,18 +30,18 @@ namespace Framework\Template\Implementation {
 
             $this->_map = array(
                 "partial" => array(
-                    "opener" => "{partial",
-                    "closer" => "}",
+                    "opener" => "{{partial",
+                    "closer" => "}}",
                     "handler" => "_partial"
                 ),
                 "include" => array(
-                    "opener" => "{include",
-                    "closer" => "}",
+                    "opener" => "{{include",
+                    "closer" => "}}",
                     "handler" => "_include"
                 ),
                 "ayield" => array(
-                    "opener" => "{ayield",
-                    "closer" => "}",
+                    "opener" => "{{ayield",
+                    "closer" => "}}",
                     "handler" => "ayield"
                 )
                     ) + $this->_map;
@@ -49,17 +49,17 @@ namespace Framework\Template\Implementation {
             $this->_map["statement"]["tags"] = array(
                 "set" => array(
                     "isolated" => false,
-                    "arguments" => "{key}",
+                    "arguments" => "{{key}}",
                     "handler" => "set"
                 ),
                 "append" => array(
                     "isolated" => false,
-                    "arguments" => "{key}",
+                    "arguments" => "{{key}}",
                     "handler" => "append"
                 ),
                 "prepend" => array(
                     "isolated" => false,
-                    "arguments" => "{key}",
+                    "arguments" => "{{key}}",
                     "handler" => "prepend"
                 )
                     ) + $this->_map["statement"]["tags"];

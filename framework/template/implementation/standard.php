@@ -22,27 +22,27 @@ namespace Framework\Template\Implementation {
          */
         protected $_map = array(
             "echo" => array(
-                "opener" => "{echo",
-                "closer" => "}",
+                "opener" => "{{echo",
+                "closer" => "}}",
                 "handler" => "_echo"
             ),
             "script" => array(
-                "opener" => "{script",
-                "closer" => "}",
+                "opener" => "{{script",
+                "closer" => "}}",
                 "handler" => "_script"
             ),
             "statement" => array(
-                "opener" => "{",
-                "closer" => "}",
+                "opener" => "{{",
+                "closer" => "}}",
                 "tags" => array(
                     "foreach" => array(
                         "isolated" => false,
-                        "arguments" => "{element} in {object}",
+                        "arguments" => "{{element}} in {{object}}",
                         "handler" => "_each"
                     ),
                     "for" => array(
                         "isolated" => false,
-                        "arguments" => "{element} in {object}",
+                        "arguments" => "{{element}} in {{object}}",
                         "handler" => "_for"
                     ),
                     "if" => array(
@@ -62,7 +62,7 @@ namespace Framework\Template\Implementation {
                     ),
                     "macro" => array(
                         "isolated" => false,
-                        "arguments" => "{name}({args})",
+                        "arguments" => "{{name}}({{args}})",
                         "handler" => "_macro"
                     ),
                     "literal" => array(
