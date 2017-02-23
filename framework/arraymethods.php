@@ -218,7 +218,7 @@ namespace Framework {
          * @param  array &$arr
          * @param  array $keys Mulitple keys to be unset
          */
-        public static function unset(&$arr, $keys = []) {
+        public static function unsetIndexes($arr, $keys = []) {
             foreach ($keys as $k) {
                 unset($arr[$k]);
             }

@@ -79,6 +79,13 @@ class Controller extends \Framework\Controller {
             if ($controller->user) {
                 $session->set("user", $controller->user->id);
             }
+
+            // Set Flash Message to the Action View
+            $flashMessage =  $session->get('$flashMessage', null);
+            if ($flashMessage) {
+                $session->erase('$flashMessage');
+                $controller->actionView->set('message', $flashMessage);
+            }
         });
 
         // schedule: disconnect from database
