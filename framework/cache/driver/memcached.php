@@ -10,6 +10,8 @@ namespace Framework\Cache\Driver {
      * Connections to the Memcached server are made via the connect() public method from within the __construct() method.
      * 
      * The driver also has a protected _isValidService() method that is used ensure that the value of the $_service is a valid Memcached instance. Let us look at the connect()/disconnect() methods
+     *
+     * Requirements ------------> php-memcached, "apt install memcached"
      */
     class Memcached extends Cache\Driver {
 
@@ -36,7 +38,7 @@ namespace Framework\Cache\Driver {
 
         protected function _isValidService() {
             $isEmpty = empty($this->_service);
-            $isInstance = $this->_service instanceof \Memcache;
+            $isInstance = $this->_service instanceof \Memcached;
             if ($this->isConnected && $isInstance && !$isEmpty) {
                 return true;
             }
@@ -50,10 +52,8 @@ namespace Framework\Cache\Driver {
          */
         public function connect() {
             try {
-                $this->_service = new \Memcache();
-                $this->_service->connect(
-                        $this->host, $this->port
-                );
+                $this->_service = new \Memcached();
+                $this->_service->addServer($this->host, $this->port);
                 $this->isConnected = true;
             } catch (\Exception $e) {
                 throw new Exception\Service("Unable to connect to service");
@@ -87,8 +87,7 @@ namespace Framework\Cache\Driver {
                 throw new Exception\Service("Not connected to a valid service");
             }
 
-            $value = $this->_service->get($key, MEMCACHE_COMPRESSED);
-
+            $value = $this->_service->get($key);
             if ($value) {
                 return $value;
             }
@@ -104,12 +103,12 @@ namespace Framework\Cache\Driver {
          * @return \Framework\Cache\Driver\Memcached
          * @throws Exception\Service
          */
-        public function set($key, $value, $duration = 120) {
+        public function set($key, $value, $duration = 300) {
             if (!$this->_isValidService()) {
                 throw new Exception\Service("Not connected to a valid service");
             }
 
-            $this->_service->set($key, $value, MEMCACHE_COMPRESSED, $duration);
+            $this->_service->set($key, $value, $duration);
             return $this;
         }
 
@@ -128,6 +127,14 @@ namespace Framework\Cache\Driver {
             return $this;
         }
 
+        /**
+         * Erase data from the cache
+         */
+        public function flush() {
+            if (!$this->_isValidService()) {
+                return false;
+            }
+            return $this->$_service->flush();
+        }
     }
-
 }

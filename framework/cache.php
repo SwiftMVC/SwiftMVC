@@ -53,18 +53,15 @@ namespace Framework {
             Events::fire("framework.cache.initialize.after", array($this->type, $this->options));
 
             switch ($this->type) {
-                case "memcached": {
-                        return new Cache\Driver\Memcached($this->options);
-                        break;
-                    }
-                case "mongod": {
-                        return new Cache\Driver\Mongod($this->options);
-                        break;
-                    }
-                default: {
-                        throw new Exception\Argument("Invalid type");
-                        break;
-                    }
+                case "memcached":
+                    return new Cache\Driver\Memcached($this->options);
+
+                case "mongod":
+                    return new Cache\Driver\Mongod($this->options);
+
+                default: 
+                    throw new Exception\Argument("Invalid type");
+                    break;
             }
         }
 
