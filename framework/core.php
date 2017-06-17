@@ -65,6 +65,28 @@ namespace Framework {
             require_once $vendorDir . '/autoload.php';
         }
 
+        public static function getAppPath() {
+            return APP_PATH;
+        }
+
+        public static function autoLoadPaths($paths = []) {
+            $root = static::getAppPath();
+            if (count($paths) === 0) {
+                return false;
+            }
+            spl_autoload_register(function ($classname) use ($root, $paths) {
+                $scriptPath = str_replace("\\", DIRECTORY_SEPARATOR, $classname);
+                foreach ($paths as $p) {
+                    $file = $root . $p . DIRECTORY_SEPARATOR . "{$scriptPath}.php";
+
+                    if (file_exists($file)) {
+                        require_once $file;
+                        return true;
+                    }
+                } throw new Exception("{$classname} not found");
+            });
+        }
+
         protected static function _autoload($class) {
             $paths = explode(PATH_SEPARATOR, get_include_path());
             $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE;

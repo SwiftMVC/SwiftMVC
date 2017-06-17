@@ -3,15 +3,15 @@ ob_start();
 define("DEBUG", TRUE);
 
 // 1. define the default path for includes
-define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(__FILE__)));
+define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(dirname(__FILE__))));
 define("URL", "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
-define("CDN", "/public/assets/");
+define("CDN", "/assets/");
 
 date_default_timezone_set('Asia/Kolkata');
 
 try {
     // 1. load the Core class that includes an autoloader
-    require("framework/core.php");
+    require(APP_PATH . "/framework/core.php");
     Framework\Core::initialize();
 
     // 2. Additional Path's which
@@ -70,70 +70,29 @@ try {
     
     // list exceptions
     $exceptions = array(
-        "500" => array(
-            "Framework\Cache\Exception",
-            "Framework\Cache\Exception\Argument",
-            "Framework\Cache\Exception\Implementation",
-            "Framework\Cache\Exception\Service",
-            
-            "Framework\Configuration\Exception",
-            "Framework\Configuration\Exception\Argument",
-            "Framework\Configuration\Exception\Implementation",
-            "Framework\Configuration\Exception\Syntax",
-            
-            "Framework\Controller\Exception",
-            "Framework\Controller\Exception\Argument",
-            "Framework\Controller\Exception\Implementation",
-            
-            "Framework\Core\Exception",
-            "Framework\Core\Exception\Argument",
-            "Framework\Core\Exception\Implementation",
-            "Framework\Core\Exception\Property",
-            "Framework\Core\Exception\ReadOnly",
-            "Framework\Core\Exception\WriteOnly",
-            
-            "Framework\Database\Exception",
-            "Framework\Database\Exception\Argument",
-            "Framework\Database\Exception\Implementation",
-            "Framework\Database\Exception\Service",
-            "Framework\Database\Exception\Sql",
-            
-            "Framework\Model\Exception",
-            "Framework\Model\Exception\Argument",
-            "Framework\Model\Exception\Connector",
-            "Framework\Model\Exception\Implementation",
-            "Framework\Model\Exception\Primary",
-            "Framework\Model\Exception\Type",
-            "Framework\Model\Exception\Validation",
-            
-            "Framework\Request\Exception",
-            "Framework\Request\Exception\Argument",
-            "Framework\Request\Exception\Implementation",
-            "Framework\Request\Exception\Response",
-            
-            "Framework\Router\Exception",
-            "Framework\Router\Exception\Argument",
-            "Framework\Router\Exception\Implementation",
-            
-            "Framework\Session\Exception",
-            "Framework\Session\Exception\Argument",
-            "Framework\Session\Exception\Implementation",
-            
-            "Framework\Template\Exception",
-            "Framework\Template\Exception\Argument",
-            "Framework\Template\Exception\Implementation",
-            "Framework\Template\Exception\Parser",
-            
-            "Framework\View\Exception",
-            "Framework\View\Exception\Argument",
-            "Framework\View\Exception\Data",
-            "Framework\View\Exception\Implementation",
-            "Framework\View\Exception\Renderer",
-            "Framework\View\Exception\Syntax"
+        "401" => array(
+            "Framework\Router\Exception\Inactive"
         ),
         "404" => array(
             "Framework\Router\Exception\Action",
             "Framework\Router\Exception\Controller"
+        ),
+        "500" => array(
+            "Framework\Cache\Exception",
+            "Framework\Configuration\Exception",
+            "Framework\Controller\Exception",
+            "Framework\Core\Exception",
+
+            "Framework\Database\Exception",
+            "Framework\Model\Exception",
+            "Framework\Request\Exception",
+            "Framework\Router\Exception",
+            "Framework\Session\Exception",
+
+            "Framework\Template\Exception",
+            "Framework\View\Exception",
+
+            "MongoDB\Driver\Exception\Exception"
         )
     );
 
@@ -142,7 +101,7 @@ try {
     // attempt to find the approapriate template, and render
     foreach ($exceptions as $template => $classes) {
         foreach ($classes as $class) {
-            if ($class == $exception) {
+            if ($class == $exception || is_subclass_of($exception, $class)) {
                 header("Content-type: text/html");
                 include(APP_PATH . "/application/views/layouts/errors/{$template}.php");
                 exit;
@@ -154,7 +113,7 @@ try {
     
     // render fallback template
     header("Content-type: text/html");
-    echo "An error occurred.". $e;
+    include(APP_PATH . "/application/views/layouts/errors/500.php");
     exit;
 }
 ?>
