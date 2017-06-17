@@ -142,6 +142,37 @@ namespace Framework {
             return new Exception\Implementation("{$method} method not implemented");
         }
 
+        protected function renderJSONFields($data) {
+            $obj = array();
+            foreach ($data as $key => $value) {
+                switch (gettype($value)) {
+                    case 'object':
+                        if (get_class($value) === "stdClass") {
+                            $obj[$key] = $value;
+                        } else if (is_a($value, 'Framework\Model')) {
+                            $obj[$key] = $value->getJsonData();
+                        } else {
+                            $obj[$key] = $value;
+                        }
+                        break;
+
+                    case 'array':
+                        $obj[$key] = $this->renderJSONFields($value);
+                        break;
+
+                    case 'string':
+                    case 'integer':
+                    case 'boolean':
+                    case 'float':
+                    default:
+                        $obj[$key] = $value;
+                        break;
+
+                }
+            }
+            return $obj;
+        }
+
         public function render() {
             Events::fire("framework.controller.render.before", array($this->name));
 
@@ -155,56 +186,25 @@ namespace Framework {
                 if ($doAction) {
                     $view = $this->actionView;
 
-                    $headers = getallheaders(); $api = isset($headers['X-JSON-Api']) && $headers['X-JSON-Api'] == 'SwiftMVC';
-                    if ($this->defaultExtension == "json" && $api) {
+                    $api = $this->request->header('x-json-api', false);
+                    if ($this->defaultExtension == "json" && $api == 'SwiftMVC') {
                         $obj = array();
                         $data = $view->data;
 
                         if ($data) {
-                            foreach ($data as $keys => $values) {
-                                switch (gettype($values)) {
-                                    case 'object':
-                                        if (get_class($values) == "stdClass") {
-                                            $obj[$keys] = $values;
-                                        } elseif (is_a($values, 'Framework\Model')) {
-                                            $obj[$keys] = $values->getJsonData();
-                                        } else {
-                                            $obj[$keys] = $values;
-                                        }
-                                        break;
-                                    case 'array':
-                                        foreach ($values as $key => $value) {
-                                            if (gettype($value) == "object") {
-                                                if (get_class($value) == "stdClass") {
-                                                    $obj[$keys][] = $value;
-                                                } elseif (is_a($value, 'Framework\Model')) {
-                                                    $obj[$keys][] = $value->getJsonData();
-                                                } else {
-                                                    $obj[$keys][] = $value;
-                                                }
-                                            } else{
-                                                $obj[$keys] = $values;
-                                            }
-                                        }
-                                        break;
-
-                                    case 'string':
-                                    case 'integer':
-                                    case 'boolean':
-                                        $obj[$keys] = $values;
-                                        break;
-
-                                    default:
-                                        break;
-
-                                }
-                            }
+                            $obj = $this->renderJSONFields($data);
+                        } else {
+                            $obj = array();
                         }
                         echo json_encode($obj, JSON_PRETTY_PRINT);
+                    } else if ($this->defaultExtension == "json") { // redirect to html
+                        $parsed = parse_url(URL);
+                        $path = explode(".", $parsed['path'])[0];
+                        header("Location: $path");
+                        exit();
                     }
 
                     $results = $view->render();
-
                     $this
                             ->actionView
                             ->template

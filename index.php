@@ -10,33 +10,14 @@ define("CDN", "/public/assets/");
 date_default_timezone_set('Asia/Kolkata');
 
 try {
-    
-    // library's class autoloader
-    spl_autoload_register(function($class) {
-        $path = str_replace("\\", DIRECTORY_SEPARATOR, $class);
-        $file = APP_PATH . "/application/libraries/{$path}.php";
-
-        if (file_exists($file)) {
-            require_once $file;
-            return true;
-        }
-    });
-
-    if (!function_exists('getallheaders')) { 
-        function getallheaders() { 
-            $headers = ''; 
-            foreach ($_SERVER as $name => $value) { 
-               if (substr($name, 0, 5) == 'HTTP_') { 
-                   $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value; 
-               }
-           }
-           return $headers;
-        }
-    }
-
-    // 2. load the Core class that includes an autoloader
+    // 1. load the Core class that includes an autoloader
     require("framework/core.php");
     Framework\Core::initialize();
+
+    // 2. Additional Path's which
+    Framework\Core::autoLoadPaths([
+        "/application/libraries"
+    ]);
 
     // plugins
     $path = APP_PATH . "/application/plugins";
