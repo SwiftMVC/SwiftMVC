@@ -5,6 +5,8 @@ SwiftMVC is a PHP MVC Framework with easy application Test, easy to use, fast to
 ### Documentation
 Visit wiki pages
 
+The Web root when using this framework should be configured to public/
+
 ### Requirements
 - Apache Web Server or equivalent with mod rewrite support.
 - PHP 5.3 or greater is required
@@ -12,8 +14,9 @@ Visit wiki pages
 ### Installation
 1. Download the SwiftMVC framework
 2. Unzip the package.
-3. Open the public/routes.php file with a text editor, setup your routes.
-4. Open application/configuration/database.ini and set your database credentials (if a database is needed).
+3. Do composer install
+4. Open the public/routes.php file with a text editor, setup your routes.
+5. Open application/configuration/database.ini and set your database credentials (if a database is needed).
 
 ### Tests
 To be added soon
