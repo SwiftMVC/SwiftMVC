@@ -1,0 +1,9 @@
+{
+    "require": {
+        "ua-parser/uap-php": "^3.4",
+        "symfony/http-foundation": "^3.2"
+    },
+    "config" : {
+        "vendor-dir": "framework/vendor"
+    }
+}
