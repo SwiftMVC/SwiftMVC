@@ -68,6 +68,12 @@ namespace Framework {
         protected $_defaultContentType = "text/html";
 
         /**
+         * @readwrite
+         * @var Container\Request Store the current request state
+         */
+        protected $_request = null;
+
+        /**
          * It defines the location of the layout template, which is passed to the new View instance, which is then passed into the setLayoutView() setter method.
          * It gets the controller/action names from the router. It gets the router instance from the registry, and uses getters for the names.
          * It then builds a path from the controller/action names, to a template it can render.
@@ -90,6 +96,10 @@ namespace Framework {
             }
 
             $this->setLayout();
+
+            if (!$this->request) {
+                $this->request = new Container\Request();
+            }
 
             Events::fire("framework.controller.construct.after", array($this->name));
         }

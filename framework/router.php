@@ -135,12 +135,17 @@ namespace Framework {
             Events::fire("framework.router.controller.before", array($controller, $parameters));
 
             try {
+                if (!class_exists($name)) { // because PHP does not catch fatal errors - Class Not found
+                    throw new Router\Exception\Controller("Class not found");   
+                }
                 $instance = new $name(array(
                     "parameters" => $parameters
                 ));
                 Registry::set("controller", $instance);
-            } catch (\Exception $e) {
+            } catch (Router\Exception\Controller $e) {
                 throw new Exception\Controller("Controller {$name} not found");
+            } catch (\Exception $e) {
+                throw new Exception\Controller("Controller {$name} not instantied Error: " . $e->getMessage());
             }
 
             Events::fire("framework.router.controller.after", array($controller, $parameters));

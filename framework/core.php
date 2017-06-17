@@ -46,6 +46,8 @@ namespace Framework {
             $paths[] = get_include_path();
             set_include_path(join(PATH_SEPARATOR, $paths));
             spl_autoload_register(__CLASS__ . "::_autoload");
+
+            static::vendorAutoload();
         }
 
         protected static function _clean($array) {
@@ -53,6 +55,14 @@ namespace Framework {
                 return array_map(__CLASS__ . "::_clean", $array);
             }
             return stripslashes($array);
+        }
+
+        protected static function vendorAutoload() {
+            $vendorDir = __DIR__ . '/vendor';
+            if (!is_dir($vendorDir)) {
+                throw new Exception("Vendor Dir not found!! Did you do composer install?");
+            }
+            require_once $vendorDir . '/autoload.php';
         }
 
         protected static function _autoload($class) {
